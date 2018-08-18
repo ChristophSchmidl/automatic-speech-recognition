@@ -3,7 +3,7 @@
 
 Useful resources:
 
-* How to build automatic speech recognition system: http://llcao.net/blog/columbiae6489/2017/02/23/How-to-build-ASR-system.html
+* [How to build automatic speech recognition system](http://llcao.net/blog/columbiae6489/2017/02/23/How-to-build-ASR-system.html) 
 * Building a Dead Simple Speech Recognition Engine using ConvNet in Keras: https://blog.manash.me/building-a-dead-simple-word-recognition-engine-using-convnet-in-keras-25e72c19c12b
 * AUTOMATIC SPEECH RECOGNITION (ASR) 2017-18: LECTURES: https://www.inf.ed.ac.uk/teaching/courses/asr/lectures.html
 * List of state-of-the-art ASR approaches: https://github.com/syhw/wer_are_we
