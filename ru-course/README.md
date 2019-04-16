@@ -17,6 +17,8 @@ This project is about speaker diarization using convolutional neural networks wi
 * SpeakerDiarization_RNN_CNN_LSTM: https://github.com/vishalshar/SpeakerDiarization_RNN_CNN_LSTM	
 * Awesome Kaldi: https://github.com/YoavRamon/awesome-kaldi
 * Speaker diarization based on Kaldi x-vectors using pretrained model: https://github.com/Jamiroquai88/VBDiarization
+* 3D-convolutional-speaker-recognition: https://github.com/astorfi/3D-convolutional-speaker-recognition
+	* Paper: Text-Independent Speaker Verification Using 3D Convolutional Neural Networks https://arxiv.org/abs/1705.09422
 
 ### Papers
 
@@ -34,6 +36,8 @@ This project is about speaker diarization using convolutional neural networks wi
 * Deep Neural Network Embeddings for Text-Independent Speaker Verification: http://danielpovey.com/files/2017_interspeech_embeddings.pdf
 * Deep Learning Approaches for Online Speaker Diarization (Class report): http://web.stanford.edu/class/cs224s/reports/Chaitanya_Asawa.pdf
 * Speaker diarization system using HXLPS and deep neural network: https://www.sciencedirect.com/science/article/pii/S1110016816303416
+* Text-Independent Speaker Verification Using 3D Convolutional Neural Networks: https://arxiv.org/abs/1705.09422
+* VoxCeleb2: Deep Speaker Recognition: https://arxiv.org/abs/1806.05622
 
 ### Blogposts
 
