@@ -19,6 +19,10 @@ This project is about speaker diarization using convolutional neural networks wi
 * Speaker diarization based on Kaldi x-vectors using pretrained model: https://github.com/Jamiroquai88/VBDiarization
 * 3D-convolutional-speaker-recognition: https://github.com/astorfi/3D-convolutional-speaker-recognition
 	* Paper: Text-Independent Speaker Verification Using 3D Convolutional Neural Networks https://arxiv.org/abs/1705.09422
+* speaker diarization by uis-rnn and speaker embedding by vgg-speaker-recognition: https://github.com/taylorlu/Speaker-Diarization	
+* Utterance-level Aggregation For Speaker Recognition In The Wild: https://github.com/WeidiXie/VGG-Speaker-Recognition
+	* Description: http://www.robots.ox.ac.uk/~vgg/research/speakerID/
+	* Paper: UTTERANCE-LEVEL AGGREGATION FOR SPEAKER RECOGNITION IN THE WILD https://arxiv.org/pdf/1902.10107.pdf
 
 ### Papers
 
@@ -38,6 +42,7 @@ This project is about speaker diarization using convolutional neural networks wi
 * Speaker diarization system using HXLPS and deep neural network: https://www.sciencedirect.com/science/article/pii/S1110016816303416
 * Text-Independent Speaker Verification Using 3D Convolutional Neural Networks: https://arxiv.org/abs/1705.09422
 * VoxCeleb2: Deep Speaker Recognition: https://arxiv.org/abs/1806.05622
+* UTTERANCE-LEVEL AGGREGATION FOR SPEAKER RECOGNITION IN THE WILD: https://arxiv.org/pdf/1902.10107.pdf
 
 ### Blogposts
 
