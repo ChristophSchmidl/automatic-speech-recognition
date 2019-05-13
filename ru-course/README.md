@@ -8,24 +8,69 @@
 This project is about keyword spotting using convolutional neural networks with transfer learning (Imagenet). 
 
 
+### Kaggle
+
+* https://www.kaggle.com/c/tensorflow-speech-recognition-challenge
+
+* https://www.kaggle.com/timolee/audio-data-conversion-to-images-eda
+
 ### Github repositories
+
 
 
 
 ### Papers
 
+* Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition
+	* https://arxiv.org/abs/1804.03209
+* Speech Recognition: Keyword Spotting Through Image Recognition (2018)
+	* https://arxiv.org/abs/1803.03759
+* An Experimental Analysis of the Power Consumption of Convolutional Neural Networks for Keyword Spotting
+	* https://arxiv.org/pdf/1711.00333.pdf	
+* Convolutional Recurrent Neural Networks for Small-Footprint Keyword Spotting (2017)
+	* https://arxiv.org/abs/1703.05390
+* Honk: A PyTorch Reimplementation of Convolutional Neural Networks for Keyword Spotting
+	* https://arxiv.org/abs/1710.06554	
+* Convolutional neural networks for small-footprint keyword spotting (2015)
+	* https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43969.pdf
+* Small-footprint keyword spotting using deep neural networks (2014)
+	* https://storage.googleapis.com/pub-tools-public-publication-data/pdf/42537.pdf
+
+#### Transfer learning
+
+* Transfer Learning for Speech Recognition on a Budget
+	* https://arxiv.org/pdf/1706.00290.pdf
+* Learning and Transferring Mid-Level Image Representations using Convolutional Neural Networks	
+	* http://openaccess.thecvf.com/content_cvpr_2014/papers/Oquab_Learning_and_Transferring_2014_CVPR_paper.pdf
 
 
 ### Blogposts
 
-
+* https://www.tensorflow.org/tutorials/sequences/audio_recognition
+* https://medium.com/@sidereal/cnns-architectures-lenet-alexnet-vgg-googlenet-resnet-and-more-666091488df5
 
 ### Papers with Code
 
-* https://paperswithcode.com/task/speaker-diarization/codeless
-	* https://paperswithcode.com/paper/speaker-diarization-using-deep-recurrent
+* https://paperswithcode.com/task/keyword-spotting
+	* https://paperswithcode.com/paper/hello-edge-keyword-spotting-on (20 Nov 2017)
+	* https://paperswithcode.com/paper/deep-residual-learning-for-small-footprint (28 Oct 2017) 
+	* https://paperswithcode.com/paper/honk-a-pytorch-reimplementation-of (18 Oct 2017)
+	* https://paperswithcode.com/paper/efficient-keyword-spotting-using-dilated (19 Nov 2018)
+	* https://paperswithcode.com/paper/read-bad-a-new-dataset-and-evaluation-scheme (9 May 2017)
+	* https://paperswithcode.com/paper/stochastic-adaptive-neural-architecture (16 Nov 2018)
+	* https://paperswithcode.com/paper/speech-commands-a-dataset-for-limited (9 Apr 2018)
+	* https://paperswithcode.com/paper/temporal-convolution-for-real-time-keyword (8 Apr 2019)
+	* https://paperswithcode.com/paper/whats-cookin-interpreting-cooking-videos (5 Mar 2015)
+	* https://paperswithcode.com/paper/javascript-convolutional-neural-networks-for (30 Oct 2018)
+	* https://paperswithcode.com/paper/benchmarking-keyword-spotting-efficiency-on (4 Dec 2018)
+	* https://paperswithcode.com/paper/an-end-to-end-architecture-for-keyword (28 Nov 2016)
+
+* https://paperswithcode.com/task/small-footprint-keyword-spotting
+	* https://paperswithcode.com/paper/deep-residual-learning-for-small-footprint (28 Oct 2017)
+	* https://paperswithcode.com/paper/efficient-keyword-spotting-using-dilated (19 Nov 2018)
 
 
 ### Speech corpora
 
 * http://slam.iis.sinica.edu.tw/ldc.htm
+* Speech commands dataset: http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz
