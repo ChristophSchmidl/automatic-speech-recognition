@@ -12,11 +12,16 @@ This project is about keyword spotting using convolutional neural networks with 
 
 * https://www.kaggle.com/c/tensorflow-speech-recognition-challenge
 
-* https://www.kaggle.com/timolee/audio-data-conversion-to-images-eda
+#### Kernels
+
+- [ ] https://www.kaggle.com/davids1992/speech-representation-and-data-exploration
+- [ ] https://www.kaggle.com/alexozerin/end-to-end-baseline-tf-estimator-lb-0-72
+- [ ] https://www.kaggle.com/timolee/audio-data-conversion-to-images-eda
+- [ ] https://www.kaggle.com/alphasis/light-weight-cnn-lb-0-74
 
 ### Github repositories
 
-
+* https://github.com/YoavRamon/awesome-kaldi
 
 
 ### Papers
@@ -48,6 +53,8 @@ This project is about keyword spotting using convolutional neural networks with 
 
 * https://www.tensorflow.org/tutorials/sequences/audio_recognition
 * https://medium.com/@sidereal/cnns-architectures-lenet-alexnet-vgg-googlenet-resnet-and-more-666091488df5
+* https://towardsdatascience.com/how-to-start-with-kaldi-and-speech-recognition-a9b7670ffff6
+* http://www.practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/
 
 ### Papers with Code
 
