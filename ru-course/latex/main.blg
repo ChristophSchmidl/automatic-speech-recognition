@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: plain.bst
+Database file #1: references.bib
+Warning--I didn't find a database entry for "Rynne2008LinearAnalysis"
+Warning--I didn't find a database entry for "Oort1958"
+Warning--I didn't find a database entry for "Reed1960"
+Warning--empty journal in sainath2015convolutional
+You've used 10 entries,
+            2118 wiz_defined-function locations,
+            549 strings with 6022 characters,
+and the built_in function-call counts, 3952 in all, are:
+= -- 391
+> -- 209
+< -- 4
++ -- 83
+- -- 72
+* -- 251
+:= -- 641
+add.period$ -- 33
+call.type$ -- 10
+change.case$ -- 66
+chr.to.int$ -- 0
+cite$ -- 11
+duplicate$ -- 160
+empty$ -- 279
+format.name$ -- 72
+if$ -- 845
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 10
+newline$ -- 53
+num.names$ -- 20
+pop$ -- 80
+preamble$ -- 1
+purify$ -- 56
+quote$ -- 0
+skip$ -- 130
+stack$ -- 0
+substring$ -- 211
+swap$ -- 57
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 40
+warning$ -- 1
+while$ -- 32
+width$ -- 12
+write$ -- 108
+(There were 4 warnings)

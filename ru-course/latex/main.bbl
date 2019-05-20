@@ -1,0 +1,63 @@
+\begin{thebibliography}{10}
+
+\bibitem{arik2017convolutional}
+Sercan~O Arik, Markus Kliegl, Rewon Child, Joel Hestness, Andrew Gibiansky,
+  Chris Fougner, Ryan Prenger, and Adam Coates.
+\newblock Convolutional recurrent neural networks for small-footprint keyword
+  spotting.
+\newblock {\em arXiv preprint arXiv:1703.05390}, 2017.
+
+\bibitem{chen2014small}
+Guoguo Chen, Carolina Parada, and Georg Heigold.
+\newblock Small-footprint keyword spotting using deep neural networks.
+\newblock In {\em 2014 IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 4087--4091. IEEE, 2014.
+
+\bibitem{gouda2018speech}
+Sanjay~Krishna Gouda, Salil Kanetkar, David Harrison, and Manfred~K Warmuth.
+\newblock Speech recognition: Keyword spotting through image recognition.
+\newblock {\em arXiv preprint arXiv:1803.03759}, 2018.
+
+\bibitem{kunze2017transfer}
+Julius Kunze, Louis Kirsch, Ilia Kurenkov, Andreas Krug, Jens Johannsmeier, and
+  Sebastian Stober.
+\newblock Transfer learning for speech recognition on a budget.
+\newblock {\em arXiv preprint arXiv:1706.00290}, 2017.
+
+\bibitem{oquab2014learning}
+Maxime Oquab, Leon Bottou, Ivan Laptev, and Josef Sivic.
+\newblock Learning and transferring mid-level image representations using
+  convolutional neural networks.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 1717--1724, 2014.
+
+\bibitem{sainath2015convolutional}
+Tara Sainath and Carolina Parada.
+\newblock Convolutional neural networks for small-footprint keyword spotting.
+\newblock 2015.
+
+\bibitem{tang2017honk}
+Raphael Tang and Jimmy Lin.
+\newblock Honk: A pytorch reimplementation of convolutional neural networks for
+  keyword spotting.
+\newblock {\em arXiv preprint arXiv:1710.06554}, 2017.
+
+\bibitem{tang2018deep}
+Raphael Tang and Jimmy Lin.
+\newblock Deep residual learning for small-footprint keyword spotting.
+\newblock In {\em 2018 IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 5484--5488. IEEE, 2018.
+
+\bibitem{tang2018experimental}
+Raphael Tang, Weijie Wang, Zhucheng Tu, and Jimmy Lin.
+\newblock An experimental analysis of the power consumption of convolutional
+  neural networks for keyword spotting.
+\newblock In {\em 2018 IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 5479--5483. IEEE, 2018.
+
+\bibitem{warden2018speech}
+Pete Warden.
+\newblock Speech commands: A dataset for limited-vocabulary speech recognition.
+\newblock {\em arXiv preprint arXiv:1804.03209}, 2018.
+
+\end{thebibliography}

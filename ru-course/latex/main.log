@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.10.17)  18 MAY 2019 18:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.10.17)  20 MAY 2019 19:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -787,7 +787,7 @@ to.pdf>
 r-eps-converted-to.pdf img/in_dei_nomine_feliciter.eps>
 (epstopdf)             \includegraphics on input line 80.
 Package epstopdf Info: Output file is already uptodate.
-<img/in_dei_nomine_feliciter-eps-converted-to.pdf, id=55, 248.93pt x 319.1925pt
+<img/in_dei_nomine_feliciter-eps-converted-to.pdf, id=59, 248.93pt x 319.1925pt
 >
 File: img/in_dei_nomine_feliciter-eps-converted-to.pdf Graphic file (type pdf)
 <use img/in_dei_nomine_feliciter-eps-converted-to.pdf>
@@ -799,11 +799,11 @@ Package pdftex.def Info: img/in_dei_nomine_feliciter-eps-converted-to.pdf  used
 {/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./img/i
 n_dei_nomine_feliciter-eps-converted-to.pdf>]
 (./main.toc
-LaTeX Font Info:    Try loading font information for U+msa on input line 12.
+LaTeX Font Info:    Try loading font information for U+msa on input line 3.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 12.
+LaTeX Font Info:    Try loading font information for U+msb on input line 3.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -819,29 +819,25 @@ l.118 \newpage
                [1
 
 ]
-<img/grading.png, id=86, 645.41125pt x 393.47pt>
-File: img/grading.png Graphic file (type png)
-<use img/grading.png>
-Package pdftex.def Info: img/grading.png  used on input line 164.
-(pdftex.def)             Requested size: 380.69788pt x 232.08524pt.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 131.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 170.
-
-(/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
+ (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 170.
- [2]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 131.
+<img/grading.png, id=101, 645.41125pt x 393.47pt>
+File: img/grading.png Graphic file (type png)
+<use img/grading.png>
+Package pdftex.def Info: img/grading.png  used on input line 182.
+(pdftex.def)             Requested size: 380.69788pt x 232.08524pt.
+ [2] [3 <./img/grading.png>]
 Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
-ine 193.
+ine 211.
 
 
-LaTeX Warning: Citation `Rynne2008LinearAnalysis' on page 3 undefined on input 
-line 215.
+LaTeX Warning: Citation `Rynne2008LinearAnalysis' on page 4 undefined on input 
+line 233.
 
 Package epstopdf Info: Source file: <img/in_dei_nomine_feliciter.eps>
 (epstopdf)                    date: 2019-05-18 13:52:30
@@ -852,43 +848,38 @@ to.pdf>
 (epstopdf)                    size: 8478 bytes
 (epstopdf)             Command: <repstopdf --outfile=img/in_dei_nomine_felicite
 r-eps-converted-to.pdf img/in_dei_nomine_feliciter.eps>
-(epstopdf)             \includegraphics on input line 220.
+(epstopdf)             \includegraphics on input line 238.
 Package epstopdf Info: Output file is already uptodate.
 File: img/in_dei_nomine_feliciter-eps-converted-to.pdf Graphic file (type pdf)
 <use img/in_dei_nomine_feliciter-eps-converted-to.pdf>
 Package pdftex.def Info: img/in_dei_nomine_feliciter-eps-converted-to.pdf  used
- on input line 220.
+ on input line 238.
 (pdftex.def)             Requested size: 114.21051pt x 146.45042pt.
 
-LaTeX Warning: Citation `Oort1958' on page 3 undefined on input line 221.
+LaTeX Warning: Citation `Oort1958' on page 4 undefined on input line 239.
 
 
-LaTeX Warning: Citation `Reed1960' on page 3 undefined on input line 221.
+LaTeX Warning: Citation `Reed1960' on page 4 undefined on input line 239.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[3 <./img/grading.png>]
-No file main.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 244.
-[4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 244.
+[4] (./main.bbl) [5]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 262.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 262.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 244.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 244.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 262.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 262.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 913403E2AC77B55B13B5597944016E51;581.
+(rerunfilecheck)             Checksum: 841111F2153983D61C9DF0A973672169;648.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 244.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 262.
  ) 
 Here is how much of TeX's memory you used:
- 19493 strings out of 492649
- 355785 string characters out of 6129621
- 444269 words of memory out of 5000000
- 23001 multiletter control sequences out of 15000+600000
+ 19519 strings out of 492649
+ 356253 string characters out of 6129621
+ 445657 words of memory out of 5000000
+ 23012 multiletter control sequences out of 15000+600000
  8752 words of font info for 33 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,9n,80p,489b,1031s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -906,10 +897,10 @@ exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/tex
 live/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
 ive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (5 pages, 254117 bytes).
+Output written on main.pdf (6 pages, 263804 bytes).
 PDF statistics:
- 181 PDF objects out of 1000 (max. 8388607)
- 155 compressed objects within 2 object streams
- 35 named destinations out of 1000 (max. 500000)
- 119 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 215 PDF objects out of 1000 (max. 8388607)
+ 188 compressed objects within 2 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 127 words of extra memory for PDF output out of 10000 (max. 10000000)
 

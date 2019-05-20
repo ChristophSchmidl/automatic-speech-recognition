@@ -40,6 +40,8 @@ This project is about keyword spotting using convolutional neural networks with 
 	* https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43969.pdf
 * Small-footprint keyword spotting using deep neural networks (2014)
 	* https://storage.googleapis.com/pub-tools-public-publication-data/pdf/42537.pdf
+* Deep residual learning for small-footprint keyword spotting
+	* https://arxiv.org/pdf/1710.10361.pdf	
 
 #### Transfer learning
 
