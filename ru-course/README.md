@@ -14,10 +14,10 @@ This project is about keyword spotting using convolutional neural networks with 
 
 #### Kernels
 
-- [ ] https://www.kaggle.com/davids1992/speech-representation-and-data-exploration
-- [ ] https://www.kaggle.com/alexozerin/end-to-end-baseline-tf-estimator-lb-0-72
-- [ ] https://www.kaggle.com/timolee/audio-data-conversion-to-images-eda
-- [ ] https://www.kaggle.com/alphasis/light-weight-cnn-lb-0-74
+- [x] https://www.kaggle.com/davids1992/speech-representation-and-data-exploration
+- [x] https://www.kaggle.com/alexozerin/end-to-end-baseline-tf-estimator-lb-0-72
+- [x] https://www.kaggle.com/timolee/audio-data-conversion-to-images-eda
+- [x] https://www.kaggle.com/alphasis/light-weight-cnn-lb-0-74
 
 ### Github repositories
 
