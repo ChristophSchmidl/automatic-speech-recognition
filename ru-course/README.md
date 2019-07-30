@@ -33,8 +33,8 @@ Source: https://arxiv.org/abs/1804.03209
 
 #### Speech Recognition: Keyword Spotting Through Image Recognition (2018)
 
-Source: https://arxiv.org/abs/1803.03759
-Dataset: Speech Commands Dataset to train and evaluate the model
+* Source: https://arxiv.org/abs/1803.03759
+* Dataset: Speech Commands Dataset to train and evaluate the model
 
 The authors worked on the task of voice command recognition using the Speech Commands dataset to train and evaluate the model and therefore followed the Tensorflow Speech Recognition Challenge from Kaggle. The authors look into models which are able to run on devices which are limited with regards to memory and computation resources but also unrestricted environments.
 
