@@ -26,22 +26,49 @@ This project is about keyword spotting using convolutional neural networks with 
 
 ### Papers
 
-* Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition
-	* https://arxiv.org/abs/1804.03209
-* Speech Recognition: Keyword Spotting Through Image Recognition (2018)
-	* https://arxiv.org/abs/1803.03759
-* An Experimental Analysis of the Power Consumption of Convolutional Neural Networks for Keyword Spotting
-	* https://arxiv.org/pdf/1711.00333.pdf	
-* Convolutional Recurrent Neural Networks for Small-Footprint Keyword Spotting (2017)
-	* https://arxiv.org/abs/1703.05390
-* Honk: A PyTorch Reimplementation of Convolutional Neural Networks for Keyword Spotting
-	* https://arxiv.org/abs/1710.06554	
-* Convolutional neural networks for small-footprint keyword spotting (2015)
-	* https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43969.pdf
-* Small-footprint keyword spotting using deep neural networks (2014)
-	* https://storage.googleapis.com/pub-tools-public-publication-data/pdf/42537.pdf
-* Deep residual learning for small-footprint keyword spotting
-	* https://arxiv.org/pdf/1710.10361.pdf	
+#### Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition
+
+Source: https://arxiv.org/abs/1804.03209
+
+
+#### Speech Recognition: Keyword Spotting Through Image Recognition (2018)
+
+Source: https://arxiv.org/abs/1803.03759
+Dataset: Speech Commands Dataset to train and evaluate the model
+
+The authors worked on the task of voice command recognition using the Speech Commands dataset to train and evaluate the model and therefore followed the Tensorflow Speech Recognition Challenge from Kaggle. The authors look into models which are able to run on devices which are limited with regards to memory and computation resources but also unrestricted environments.
+
+"Speech Recognition is the subfield of Natural Language Processing that focuses on understanding spoken natural language. This involves mapping auditory input to some word in a language vocabulary." 
+
+The authors work with a small dataset of 30 words. Their proposed model will learn to identify 10 out of these 30 words and any other words as unknown. Silence is labeled as silence.
+ 
+#### An Experimental Analysis of the Power Consumption of Convolutional Neural Networks for Keyword Spotting
+	
+Source: https://arxiv.org/pdf/1711.00333.pdf	
+
+
+#### Convolutional Recurrent Neural Networks for Small-Footprint Keyword Spotting (2017)
+
+Source: https://arxiv.org/abs/1703.05390
+
+
+#### Honk: A PyTorch Reimplementation of Convolutional Neural Networks for Keyword Spotting
+
+Source: https://arxiv.org/abs/1710.06554	
+
+
+#### Convolutional neural networks for small-footprint keyword spotting (2015)
+
+Source: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/43969.pdf
+
+
+#### Small-footprint keyword spotting using deep neural networks (2014)
+Source: https://storage.googleapis.com/pub-tools-public-publication-data/pdf/42537.pdf
+
+
+#### Deep residual learning for small-footprint keyword spotting
+
+Source: https://arxiv.org/pdf/1710.10361.pdf	
 
 #### Transfer learning
 
