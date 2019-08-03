@@ -119,6 +119,18 @@
 
 \section{Introduction}
 
+The task of keyword spotting (KWS) is interesting to different domains where a hands-free interaction experience is required or desired like Google's feature of interacting with mobile devices (include "OK Google" reference). \\
+
+Different approaches to keyword spotting like:
+
+\begin{itemize}
+	\item Deep Neural Networks (DNNs)
+	\item Convolutional Neural Networks (CNNs)
+	\item (Keyword/Filler) Hiddem Markov Models (HMMs)
+\end{itemize}
+
+
+
 \begin{enumerate}
 	\item Problem
 	\item Background (literature overview)
@@ -127,11 +139,43 @@
 
 \subsection{Literature review}
 
+This section contains the most prominent approaches to the KWS task which have been successfully applied in the past and serve as baseline models or inspirations for the proposed model in this thesis. 
+
+\subsubsection{Speech Recognition: Keyword Spotting Through Image Recognition.}
+
+\begin{itemize}
+	\item Speech Recognition: Keyword Spotting Through Image Recognition. \cite{gouda2018speech}
+\end{itemize}	
+
+\textcolor{red}{Include summary about the approach of converting the long, one dimensional vector of audio data into a spectrograms and therefore making it a image classification problem.}
+
+\subsubsection{Convolutional neural networks for small-footprint keyword spotting}
+
+\begin{itemize}
+	\item Convolutional neural networks for small-footprint keyword spotting \cite{sainath2015convolutional}
+\end{itemize}	
+
+\textcolor{red}{Include summary about the different CNNs approaches which have been put into the 3 module framework of the below framework where the DNN has been exchanged for a CNN. How do the authors handle the long, one dimensional vector?}
+
+\subsubsection{Small-footprint keyword spotting using deep neural networks}
+
+\begin{itemize}
+	\item Small-footprint keyword spotting using deep neural networks \cite{chen2014small}
+\end{itemize}	
+
+\textcolor{red}{Include summary about the comparison between DNNs and HMMs and the general 3 module approach here: 1. Feature extraction. 2. Deep Neural Network 3. Posterior Handling. DNNs do not need a decoding algorithm like HMMs with Viterbi which makes it low latency.}
+
+\subsubsection{Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition}
+
+
 \begin{itemize}
 	\item Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition \cite{warden2018speech}
-	\item Speech Recognition: Keyword Spotting Through Image Recognition. \cite{gouda2018speech}
-	\item Convolutional neural networks for small-footprint keyword spotting \cite{sainath2015convolutional}
-	\item Small-footprint keyword spotting using deep neural networks \cite{chen2014small}
+\end{itemize}	
+
+\textcolor{red}{Include summary and say why the Speech Commands Dataset is a good fit for this thesis. You probably do not need a Voice-activity detection (VAD) system here.}
+
+
+\begin{itemize}
 	\item Convolutional recurrent neural networks for small-footprint keyword spotting \cite{arik2017convolutional}
 	\item Honk: A PyTorch reimplementation of convolutional neural networks for keyword spotting \cite{tang2017honk}
 	\item An experimental analysis of the power consumption of convolutional neural networks for keyword spotting \cite{tang2018experimental}
