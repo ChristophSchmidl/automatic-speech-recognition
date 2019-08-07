@@ -18,6 +18,7 @@ This project is about keyword spotting using convolutional neural networks with 
 - [x] https://www.kaggle.com/alexozerin/end-to-end-baseline-tf-estimator-lb-0-72
 - [x] https://www.kaggle.com/timolee/audio-data-conversion-to-images-eda
 - [x] https://www.kaggle.com/alphasis/light-weight-cnn-lb-0-74
+- [] https://www.kaggle.com/ezietsman/simple-keras-model-with-data-generator
 
 ### Github repositories
 
