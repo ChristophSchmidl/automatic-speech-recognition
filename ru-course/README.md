@@ -31,59 +31,66 @@ This project is about keyword spotting using convolutional neural networks with 
 
 **Original distribution**
 
+Number of classes: 31
 
-| Class              | Count   |
-|---	             |---	   |
-|  stop   		     | 2380    |
-|  yes   		     | 2377    |
-|  seven   		     | 2377    |
-|  zero   		     | 2376    |
-|  up   		     | 2375    |
-|  no   		     | 2375    |
-|  two   		     | 2373    |
-|  four   		     | 2372    |
-|  go   		     | 2372    |
-|  one   		     | 2370    |
-|  six   		     | 2369    |
-|  on   		     | 2367    |
-|  right   		     | 2367    |
-|  nine   		     | 2364    |
-|  down   		     | 2359    |
-|  five   		     | 2357    |
-|  off   		     | 2357    |
-|  three   		     | 2356    |
-|  left   		     | 2353    |
-|  eight   		     | 2352    |
-|  house   			 | 1750    |
-|  dog   			 | 1746    |
-|  marvin   		 | 1746    |
-|  wow   		     | 1745    |
-|  happy   			 | 1742    |
-|  sheila   		 | 1734    |
-|  tree   			 | 1733    |
-|  cat   		     | 1733    |
-|  bed   		     | 1713    |
-| _background_noise_ | 6       |
+| Class              | Count   | Percentage |
+|---	             |---	   |---			|
+|  stop   		     | 2380    | 0.036770	|
+|  yes   		     | 2377    | 0.036723	|
+|  seven   		     | 2377    | 0.036723	|
+|  zero   		     | 2376    | 0.036708	|
+|  up   		     | 2375    | 0.036693	|
+|  no   		     | 2375    | 0.036693	|
+|  two   		     | 2373    | 0.036662	|
+|  four   		     | 2372    | 0.036646	|
+|  go   		     | 2372    | 0.036646	|
+|  one   		     | 2370    | 0.036615	|
+|  six   		     | 2369    | 0.036600	|
+|  on   		     | 2367    | 0.036569	|
+|  right   		     | 2367    | 0.036569	|
+|  nine   		     | 2364    | 0.036523	|
+|  down   		     | 2359    | 0.036445	|
+|  five   		     | 2357    | 0.036414	|
+|  off   		     | 2357    | 0.036414	|
+|  three   		     | 2356    | 0.036399	|
+|  left   		     | 2353    | 0.036353	|
+|  eight   		     | 2352    | 0.036337	|
+|  house   			 | 1750    | 0.027037	|
+|  dog   			 | 1746    | 0.026975	|
+|  marvin   		 | 1746    | 0.026975	|
+|  wow   		     | 1745    | 0.026959	|
+|  happy   			 | 1742    | 0.026913	|
+|  sheila   		 | 1734    | 0.026789	|
+|  tree   			 | 1733    | 0.026774	|
+|  cat   		     | 1733    | 0.026774	|
+|  bird   		     | 1731    | 0.026743	|
+|  bed   		     | 1713    | 0.026465	|
+| _background_noise_ | 6       | 0.000093	|
+
 
 
 
 
 **Reduced distribution**
 
-| Class   | Count  |
-|---	  |---	   |
-| unknown |  41039 |
-| stop    |  2380  |
-| yes     |  2377  |
-| up      |  2375  |
-| no      |  2375  |
-| go      |  2372  |
-| right   |  2367  |
-| on      |  2367  |
-| down    |  2359  |
-| off     |  2357  |
-| left    |  2353  |
-| silence |  6     |
+Number of classes: 12
+
+| Class   | Count  | Percentage |
+|---	  |---	   |---			|
+| unknown |  41039 | 0.634032   |
+| stop    |  2380  | 0.036770	|
+| yes     |  2377  | 0.036723	|
+| up      |  2375  | 0.036693	|
+| no      |  2375  | 0.036693	|
+| go      |  2372  | 0.036646	|
+| right   |  2367  | 0.036569	|
+| on      |  2367  | 0.036569	|
+| down    |  2359  | 0.036445	|
+| off     |  2357  | 0.036414	|
+| left    |  2353  | 0.036353	|
+| silence |  6     | 0.000093	|
+
+
 
 
 
