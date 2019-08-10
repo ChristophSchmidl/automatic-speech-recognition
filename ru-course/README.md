@@ -12,6 +12,25 @@ This project is about keyword spotting using convolutional neural networks with 
 
 * https://www.kaggle.com/c/tensorflow-speech-recognition-challenge
 
+
+#### Kaggle's Evaluation
+
+Submissions are evaluated on Multiclass Accuracy, which is simply the average number of observations with the correct label.
+Note: There are only 12 possible labels for the Test set: yes, no, up, down, left, right, on, off, stop, go, silence, unknown.
+The unknown label should be used for a command that is not one one of the first 10 labels or that is not silence.
+
+**Submission File**
+
+For audio clip in the test set, you must predict the correct label. The submission file should contain a header and have the following format:
+
+```
+fname,label
+clip_000044442.wav,silence
+clip_0000adecb.wav,left
+clip_0000d4322.wav,unknown
+etc.
+```
+
 #### Kernels
 
 - [x] https://www.kaggle.com/davids1992/speech-representation-and-data-exploration
