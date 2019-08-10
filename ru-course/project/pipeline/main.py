@@ -57,28 +57,14 @@ print("Size, Shape and dimension of test df: {}, {}, {}".format(test.size, test.
 
 
 #####################################################################
-#      Load all training audio samples with 31 classes
-#####################################################################
-
-
-
-# Überflüssig?
-trainSubFolderList = []
-for x in os.listdir(train_audio_path):
-    if os.path.isdir(train_audio_path + '/' + x):
-        trainSubFolderList.append(x)
-
-print("Overall train subfolders/classes: \n\n" + str(trainSubFolderList))
-print("\nNumber of classes: {}".format(len(trainSubFolderList)))
-
-
-#####################################################################
 #      Printing class distribution of train_full and train_reduced
 #####################################################################
 
-print(train_full.word.value_counts())
-print(train_reduced.word.value_counts())
 
+# Normalize=False -> Give me absolute counts
+# Normalize=True -> Give me percentages
+#print(train_full.word.value_counts(normalize=False))
+#print(train_reduced.word.value_counts(normalize=False))
 
 
 #####################################################################
@@ -239,8 +225,8 @@ spectrogram_shape = (129, 124, 1)
 log_spectrogram_shape = (99, 161, 1)
 
 
-model = get_model(log_spectrogram_shape)
-model.compile(loss='binary_crossentropy', optimizer=Adam(), metrics=['accuracy'])
+model = get_leightweight_cnn(log_spectrogram_shape)
+model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accuracy'])
 
 print(model.summary())
 
@@ -248,6 +234,7 @@ labelbinarizer = LabelBinarizer()
 X = X_reduced
 y = labelbinarizer.fit_transform(y_reduced)
 X, Xt, y, yt = train_test_split(X, y, test_size=0.3, stratify=y)
+
 
 temp_batch = batch_generator(X, y, batch_size=32)
 
@@ -269,6 +256,8 @@ model.fit_generator(
     steps_per_epoch=X.shape[0] // 32,
     validation_data=valid_gen,
     validation_steps=Xt.shape[0] // 32,
+    use_multiprocessing=False,
+    workers=1,
     callbacks=[tensorboard])
 
 
@@ -279,7 +268,9 @@ model.fit_generator(
 #####################################################################
 
 
+print("Calculating predictions...")
 
+start = time.time()
 
 predictions = []
 paths = test.path.tolist()
@@ -291,10 +282,22 @@ for path in paths:
     specgram = specgram.reshape(99, 161, -1)
     specgrams.append(specgram)
     pred = model.predict(np.array(specgrams))
-    predictions.extend(pred)
+    #print(pred)
+    #argmax = np.argmax(pred, axis=1)
+    #print("Argmax: {}".format(argmax))
+
+    #label = labelbinarizer.classes_[argmax]
+    #print(label)
+    predictions.append(pred)
+
+end = time.time()
+print("Calculating predicitions time: {}".format(end - start))
 
 
-labels = [labelbinarizer.inverse_transform(p.reshape(1, -1), threshold=0.5)[0] for p in predictions]
+print("Transforming predicitions to labels and writing csv...")
+
+
+labels = [labelbinarizer.classes_[np.argmax(p, axis=1)][0] for p in predictions]
 test['labels'] = labels
 test.path = test.path.apply(lambda x: str(x).split('/')[-1])
 submission = pd.DataFrame({'fname': test.path.tolist(), 'label': labels})

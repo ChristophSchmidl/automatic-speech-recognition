@@ -22,7 +22,11 @@ def prepare_data(df):
     unknown = [w for w in words if w not in silence + train_words]
 
     # there are only 6 silence files. Mark them as unknown too.
-    df.loc[df.word.isin(silence), 'word'] = 'unknown'
+    # df.loc[df.word.isin(silence), 'word'] = 'unknown'
+    # df.loc[df.word.isin(unknown), 'word'] = 'unknown'
+
+    # I want to have 12 labels: train_words, unknown and silence
+    df.loc[df.word.isin(silence), 'word'] = 'silence'
     df.loc[df.word.isin(unknown), 'word'] = 'unknown'
 
     return df
@@ -151,8 +155,11 @@ def batch_generator(X, y, batch_size=16):
         audio_paths = X[idx]
         labels = y[idx]
 
+        # VGG16 works with 3 channels but I only got one. Therefore, evil hacking ahead...
+
         specgrams = [get_log_spectrogram(x)[2] for x in audio_paths]
-        specgrams = [s.reshape(99, 161, -1) for s in specgrams] # Adding an additional dimension to make it fit to the cnn?
+        #specgrams = [(np.dstack([s] * 3)).reshape(99, 161, -1) for s in specgrams] # Adding an additional dimension to make it fit to the cnn?
+        specgrams = [s.reshape(99, 161, -1) for s in specgrams]
         #print(specgram)
 
         #print(specgrams.shape)
