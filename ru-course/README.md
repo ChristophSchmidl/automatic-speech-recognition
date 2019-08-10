@@ -24,44 +24,46 @@ This project is about keyword spotting using convolutional neural networks with 
 	* Change generator so it uses log spectrograms
 	* Adjust CNN to MNIST tutorial topology? 
 	* Compare the effect of number of epochs on accuracy
-- [] Look into assignment 5 of ISMI
+- [ ] Look into assignment 5 of ISMI
 
 
 #### Data distribution
 
 **Original distribution**
 
-stop                  2380
-yes                   2377
-seven                 2377
-zero                  2376
-up                    2375
-no                    2375
-two                   2373
-four                  2372
-go                    2372
-one                   2370
-six                   2369
-on                    2367
-right                 2367
-nine                  2364
-down                  2359
-five                  2357
-off                   2357
-three                 2356
-left                  2353
-eight                 2352
-house                 1750
-dog                   1746
-marvin                1746
-wow                   1745
-happy                 1742
-sheila                1734
-tree                  1733
-cat                   1733
-bird                  1731
-bed                   1713
-_background_noise_       6
+
+| Class              | Count   |
+|---	             |---	   |
+|  stop   		     | 2380    |
+|  yes   		     | 2377    |
+|  seven   		     | 2377    |
+|  zero   		     | 2376    |
+|  up   		     | 2375    |
+|  no   		     | 2375    |
+|  two   		     | 2373    |
+|  four   		     | 2372    |
+|  go   		     | 2372    |
+|  one   		     | 2370    |
+|  six   		     | 2369    |
+|  on   		     | 2367    |
+|  right   		     | 2367    |
+|  nine   		     | 2364    |
+|  down   		     | 2359    |
+|  five   		     | 2357    |
+|  off   		     | 2357    |
+|  three   		     | 2356    |
+|  left   		     | 2353    |
+|  eight   		     | 2352    |
+|  house   			 | 1750    |
+|  dog   			 | 1746    |
+|  marvin   		 | 1746    |
+|  wow   		     | 1745    |
+|  happy   			 | 1742    |
+|  sheila   		 | 1734    |
+|  tree   			 | 1733    |
+|  cat   		     | 1733    |
+|  bed   		     | 1713    |
+| _background_noise_ | 6       |
 
 
 
