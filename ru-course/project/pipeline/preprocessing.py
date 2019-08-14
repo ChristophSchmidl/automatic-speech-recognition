@@ -45,7 +45,7 @@ def log_specgram(audio, sample_rate, window_size=20,
     return freqs, np.log(spec.T.astype(np.float32) + eps)
 
 
-def get_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10):
+def get_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10, num_channels=1):
     (sample_rate, sig) = wavfile.read(audio_path)
 
     #print("Samplerate of wav file: {}".format(sample_rate))
@@ -58,11 +58,14 @@ def get_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10):
     # f = array of sample frequencies
     # t = array of segment times
     # Sxx = Spectrogram of x. By default, the last axis of Sxx corresponds to the segment times.
-    f, t, Sxx = signal.spectrogram(sig, nperseg=256, noverlap=128)
-    return f, t, Sxx
+    f, t, spectrogram = signal.spectrogram(sig, nperseg=256, noverlap=128)
+    spectrogram = spectrogram.reshape(99, 161, -1)
+    spectrogram = (np.dstack([spectrogram] * num_channels)).reshape(99, 161, -1)  # Make it fit to VGG16 and 3 channels
+
+    return f, t, spectrogram
 
 
-def get_log_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10):
+def get_log_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10, num_channels=1):
     (sample_rate, sig) = wavfile.read(audio_path)
 
     #print("Samplerate of wav file: {}".format(sample_rate))
@@ -85,50 +88,12 @@ def get_log_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10):
                                    noverlap=noverlap,
                                    detrend=False)
     log_spectrogram = np.log(Sxx.T.astype(np.float32) + eps)
+    log_spectrogram = log_spectrogram.reshape(99, 161, -1)
+    log_spectrogram = (np.dstack([log_spectrogram] * num_channels)).reshape(99, 161, -1)  # Make it fit to VGG16 and 3 channels
 
     return f, t, log_spectrogram
 
 
-def get_specgrams(paths, sample_rate=16000, window_size=20, step_size=10, eps=1e-10, log_specgrams=True):
-    '''
-    Given list of paths, return specgrams.
-    '''
-    nperseg = int(round(window_size * sample_rate / 1e3))
-    noverlap = int(round(step_size * sample_rate / 1e3))
-
-    # read the wav files
-    wavs = [wavfile.read(x)[1] for x in paths]
-
-    # zero pad the shorter samples and cut off the long ones.
-    data = []
-    for wav in wavs:
-        if wav.size < 16000:
-            d = np.pad(wav, (sample_rate - wav.size, 0), mode='constant')
-        else:
-            d = wav[0:sample_rate]
-        data.append(d)
-
-    specgram = []
-
-    if log_specgrams is False:
-        # get the specgram
-        specgram = [signal.spectrogram(d, nperseg=256, noverlap=128)[2] for d in data]
-
-        specgram = [s.reshape(129, 124, -1) for s in specgram]
-        return specgram
-    else:
-        specgram = [signal.spectrogram(d,
-                                       fs=sample_rate,
-                                       window='hann',
-                                       nperseg=256,
-                                       noverlap=128,
-                                       detrend=False)[2] for d in data]
-
-        specgram = [s.reshape(129, 124, -1) for s in specgram]
-        print(type(specgram))
-        specgram = np.asarray(specgram)
-
-        return np.log(specgram.T.astype(np.float32) + eps)
 
 def get_random_index(arr):
     idx = np.random.randint(0, arr.shape[0])
@@ -144,7 +109,7 @@ def get_random_input_and_label(X, y):
     return audio_path, label
 
 
-def batch_generator(X, y, batch_size=16):
+def batch_generator(X, y, batch_size=16, num_channels=1):
     '''
     Return a random image from X, y
     '''
@@ -157,9 +122,8 @@ def batch_generator(X, y, batch_size=16):
 
         # VGG16 works with 3 channels but I only got one. Therefore, evil hacking ahead...
 
-        specgrams = [get_log_spectrogram(x)[2] for x in audio_paths]
-        #specgrams = [(np.dstack([s] * 3)).reshape(99, 161, -1) for s in specgrams] # Adding an additional dimension to make it fit to the cnn?
-        specgrams = [s.reshape(99, 161, -1) for s in specgrams]
+        specgrams = [get_log_spectrogram(x, num_channels=num_channels)[2] for x in audio_paths]
+
         #print(specgram)
 
         #print(specgrams.shape)
