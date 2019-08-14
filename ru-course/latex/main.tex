@@ -235,7 +235,7 @@ We also saw, particularly in the case of the low-latency convolution model, how 
 \caption{A comparison of the spectrogram (a) and the
 amplitude-vs.-time plot (b) for the same audio recording of
 a person saying the word “bed”.}
-\label{fig:test}
+\label{fig:spectrogram_vs_time_plot}
 \end{figure}
 
 
@@ -348,6 +348,24 @@ V2 Test & 82.7\% & 88.2\% \\ \hline
 
 \section{Set-up}
 
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/9_spectrograms.png}
+    \caption{Samples of nine different spectrograms}
+    \label{fig:spectrograms}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{img/9_log_spectrograms.png}
+    \caption{Samples of nine different log spectrograms}
+    \label{fig:log_spectrograms}
+\end{figure}
+
+
+
 \begin{enumerate}
 	\item selection of the speech data, description of the data, tuning/adaptation model parameters
 	\item types of experiments (generalizations to which unseen conditions, etc. )
@@ -386,6 +404,44 @@ ResNet50  	& 75,182,988   & 75,029,516 	   & 153,472 \\ \hline
 
 \subsection{Baseline}
 
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/baseline_models/mnist_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/baseline_models/mnist_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the MNIST model with Xavier Glorot initialization}
+\label{fig:mnist_ten_epochs}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/baseline_models/leightweight_cnn_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/baseline_models/leightweight_cnn_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the Lightweight CNN model with Xavier Glorot initialization}
+\label{fig:lightweight_cnn_ten_epochs}
+\end{figure}
+
+
 \begin{table}[h!]
 \center
 \begin{tabular}{|l|l|l|l|l|l|}
@@ -394,7 +450,7 @@ ResNet50  	& 75,182,988   & 75,029,516 	   & 153,472 \\ \hline
 MNIST		    & 0.9595 		 & 0.1213      & 0.9039		  & 0.3866	 &	1064.72\\ \hline
 Leightweight CNN    & 0.9487   	 & 0.1564 	   & 0.9332		  &	0.2109	 &  532.73 \\ \hline
 \end{tabular}
-\caption{Final baseline results}
+\caption{Final baseline results with Xavier Glorot initialization}
 \label{tab:v1_v2_results}
 \end{table}
 
@@ -407,7 +463,7 @@ Leightweight CNN    & 0.9487   	 & 0.1564 	   & 0.9332		  &	0.2109	 &  532.73 \\
 MNIST		  & 0.7005  & 1.0187   & 0.7662 & 0.7237 \\ \hline
 Leight CNN    & 0.7150  & 0.9276  & 0.8114  &	0.5540 \\ \hline
 \end{tabular}
-\caption{Baseline results after one epoch}
+\caption{Baseline results after one epoch with Xavier Glorot initialization}
 \label{tab:v1_v2_results}
 \end{table}
 
@@ -419,6 +475,65 @@ Leight CNN    & 0.7150  & 0.9276  & 0.8114  &	0.5540 \\ \hline
 
 \subsubsection{Xavier initialization}
 
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/from_scratch_models/Inceptionv3_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/from_scratch_models/Inceptionv3_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the Inception V3 model with Xavier Glorot initialization}
+\label{fig:inception_v3_ten_epochs_xavier}
+\end{figure}
+
+
+
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/from_scratch_models/vgg16_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/from_scratch_models/vgg16_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the VGG16 model with Xavier Glorot initialization}
+\label{fig:vgg16_ten_epochs_xavier}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/from_scratch_models/ResNet50_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/from_scratch_models/ResNet50_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the ResNet50 model with Xavier Glorot initialization}
+\label{fig:resnet50_ten_epochs_xavier}
+\end{figure}
+
+
 \begin{table}[h!]
 \center
 \begin{tabular}{|l|l|l|l|l|l|}
@@ -428,7 +543,7 @@ Inception V3	& 0.9338 & 0.2238  & 0.9427	& 0.1868 &	2332.23\\ \hline
 VGG16  		& 0.9723   & 0.0900   & 0.9583	&	0.2011 &  2530.47\\ \hline
 ResNet50  	& 0.9548  & 0.1421 	& 0.9445 &	0.1873	 &  3807.93\\ \hline
 \end{tabular}
-\caption{Final CNN results with Xavier initialization}
+\caption{Final CNN results with with Xavier Glorot initialization}
 \label{tab:v1_v2_results}
 \end{table}
 
@@ -441,12 +556,72 @@ Inception V3 & 0.6539 	& 1.4176 	 &  0.6778	 & 1.1090\\ \hline
 VGG16  		& 0.6519   	& 1.3202     &  0.6906	 &	1.3379\\ \hline
 ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
 \end{tabular}
-\caption{CNN results after one epoch with Xavier initialization}
+\caption{CNN results after one epoch with Xavier Glorot initialization}
 \label{tab:v1_v2_results}
 \end{table}
 
 
 \subsubsection{Imagenet weight initialization}
+
+Test
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/pre-trained_models/Inception_v3_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/pre-trained_models/Inception_v3_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the Inception V3 model with Imagenet initialization}
+\label{fig:inception_v3_ten_epochs_imagenet}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/pre-trained_models/vgg16_pretrained_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/pre-trained_models/vgg16_pretrained_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the VGG16 model with Imagenet initialization}
+\label{fig:vgg16_ten_epochs_imagenet}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/pre-trained_models/ResNet50_pretrained_acc.png}
+  \caption{Accuracy}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1.2\linewidth]{img/pre-trained_models/ResNet50_pretrained_loss.png}
+  \caption{Loss}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Accuracy and loss after 10 epochs for the ResNet50 model with Imagenet initialization}
+\label{fig:resnet50_ten_epochs_imagenet}
+\end{figure}
+
+
 
 \begin{table}[h!]
 \center
@@ -457,7 +632,7 @@ ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
  VGG16  		& 0.9745  	 	 & 0.0912      & 0.9611	  	  &	0.1730 	 & 2541.83\\ \hline     
  ResNet50  	& 0.9134  	  	& 0.2991  	   & 0.9252	 	  &	0.3055	 &  3653.67\\ \hline
 \end{tabular}
-\caption{Final CNN results with Imagenet weight initialization}
+\caption{Final CNN results with Imagenet initialization}
 \label{tab:v1_v2_results}
 \end{table}
 
@@ -470,7 +645,7 @@ Inception V3 & 0.6268  		 & 1.7132  	 & 0.6315	& 2.0153	\\ \hline
 VGG16  		& 0.6307  	 	 & 1.4430    & 0.6706	&	1.2011 \\ \hline
 ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
 \end{tabular}
-\caption{CNN results after one epoch with Imagenet weight initialization}
+\caption{CNN results after one epoch with Imagenet initialization}
 \label{tab:v1_v2_results}
 \end{table}
 
