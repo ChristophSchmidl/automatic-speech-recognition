@@ -190,12 +190,16 @@ Number of classes: 12
 
 | Model   		| Train Accuracy | Train Loss  | Val Accuracy | Val Loss | Training Time (sec) | 
 |---	  		|---	  		 |---		   |---	 	  	  |---       |---		 	       |
-| MNIST		    | 0.9188 		 | 0.2479      | 0.8816		  | 0.3943	 |	1112.02			   |
-| Leight CNN    | 0.9443   	 	 | 0.1711 	   | 0.9400		  |	0.1865	 |  549.69             |
+| MNIST		    | 0.9595 		 | 0.1213      | 0.9039		  | 0.3866	 |	1064.72			   |
+| Leight CNN    | 0.9487   	 	 | 0.1564 	   | 0.9332		  |	0.2109	 |  532.73             |
 
 
+**Baseline Training - First Epoch**
 
-
+| Model   		| Train Accuracy | Train Loss  | Val Accuracy | Val Loss | 
+|---	  		|---	  		 |---		   |---	 	  	  |---       |
+| MNIST		    | 0.7005 		 | 1.0187      | 0.7662		  | 0.7237 	 |
+| Leight CNN    | 0.7150   	 	 | 0.9276 	   | 0.8114		  |	0.5540	 | 
 
 
 **Training from scratch**
