@@ -18,7 +18,35 @@
 \usepackage{setspace}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{xcolor}
+
 \AtBeginEnvironment{quote}{\singlespacing\small}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{gray}{0.85}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SET TITLE PAGE VALUES HERE %%
@@ -322,7 +350,7 @@ V1 Test & 85.4\% & 89.7\% \\ \hline
 V2 Test & 82.7\% & 88.2\% \\ \hline
 \end{tabular}
 \caption{Top-One accuracy evaluations using different training data}
-\label{tab:v1_v2_results}
+\label{tab:top_one_accuracy}
 \end{table}
 
 
@@ -342,6 +370,9 @@ V2 Test & 82.7\% & 88.2\% \\ \hline
 
 \section{Method}
 
+The method is inspired by \cite{gouda2018speech} where three different models have been evaluated on their capability to handle audio data transformed to images. One of the baseline models is the MNIST model which is also used in the Tensorflow Speech Recognition tutorial \cite{tutorial}
+
+
 \begin{enumerate}
 	\item methodology, types of analyses, selection of the method
 \end{enumerate}
@@ -350,24 +381,186 @@ V2 Test & 82.7\% & 88.2\% \\ \hline
 
 
 
+\subsection{Dataset}
+
+Write something about the Speech Recogntion Dataset and the class distribution before and after merging for the competition.
+
+
+\subsection{Preprocessing}
+
+The preprocessing pipeline is described in further detail in the following subsections. The pipeline is rather simple at the moment and provides room for improvement which is described in section \ref{future_work}. The overall preprocessing approach is depicted in figure \ref{fig:preprocessing}.
+
+
 \begin{figure}[h]
     \centering
+    \includegraphics[width=0.8\textwidth]{img/preprocessing.png}
+    \caption{Preprocessing}
+    \label{fig:preprocessing}
+\end{figure}
+
+
+\subsubsection{Load Data}
+
+Based on the fact that there is no index file in a common format like csv which maps data entries to labels, the approach to loading the training data involves iterating labeled folders. The training folder contains one folder for each label which then contains the actual wav files for training purposes. By iterating through the different label folders and then copying the paths of the training files, a more conventient numpy array for training purposes is used. A subset of this array is depicted in table \ref{tab:numpy_array_representation}.
+
+
+\begin{table}[h!]
+\center
+\begin{tabular}{|l|l|}
+\hline
+Path & Label \\ \hline
+'../data/train/audio/down/fad7a69a\_nohash\_1.wav' & 'down'  \\ \hline
+'../data/train/audio/go/fa7895de\_nohash\_0.wav' & 'go'  \\ \hline
+'../data/train/audio/left/fa7895de\_nohash\_0.wav'  & 'left'  \\ \hline
+'../data/train/audio/no/a1c63f25\_nohash\_2.wav'   & 'no'  \\ \hline
+'../data/train/audio/off/4a1e736b\_nohash\_4.wav'  & 'off'  \\ \hline
+'../data/train/audio/on/4a1e736b\_nohash\_4.wav'  & 'on'  \\ \hline
+'../data/train/audio/right/b71ebf79\_nohash\_0.wav'      & 'right'  \\ \hline
+'../data/train/audio/\_background\_noise\_/doing\_the\_dishes.wav'  & 'silence'   \\ \hline
+'../data/train/audio/stop/fa7895de\_nohash\_0.wav' & 'stop'  \\ \hline
+'../data/train/audio/two/fa7895de\_nohash\_0.wav'& 'unknown'  \\ \hline
+'../data/train/audio/up/4c841771\_nohash\_2.wav' & 'up'  \\ \hline
+'../data/train/audio/yes/b71ebf79\_nohash\_0.wav' & 'yes'  \\ \hline
+\end{tabular}
+\caption{Training data - Numpy array representation}
+\label{tab:numpy_array_representation}
+\end{table}
+
+
+The different paths were iterated and the wav files were load into memory by using the \texttt{scipy.io.wavfile} package. The sample rate of the wav files remains at 160000 KHz. 
+
+
+\subsubsection{Check Wav Length}
+
+In order to have a consistent dataset with clips of one second length, the length of each wav file has been checked. Two approaches to guarantee one second clips have been applied:
+
+\begin{itemize}
+	\item $length < 1 \; second$: Pad the clip with constant zeros
+	\item $length > 1 \; second$: Cut the clip from the beginning to the one second mark
+\end{itemize}
+ 
+
+\subsubsection{Create Spectrograms}
+
+To transform audio data into images, the $\mathbb{R}^{16000}$ audio vectors have been transformed into spectrograms. The code for the transformation is given in listing \ref{code:spectrograms}.
+
+
+
+\begin{lstlisting}[language=Python, caption=Get spectrogram code, label=code:spectrograms]
+from scipy import signal
+from scipy.io import wavfile
+import numpy as np
+
+def get_spectrogram(audio_path, num_channels=1):
+    (sample_rate, sig) = wavfile.read(audio_path)
+
+    if sig.size < sample_rate:
+        sig = np.pad(sig, (sample_rate - sig.size, 0), mode='constant')
+    else:
+        sig = sig[0:sample_rate]
+
+    # f = array of sample frequencies
+    # t = array of segment times
+    # Sxx = Spectrogram of x. By default, the last axis of Sxx corresponds to the segment times.
+    f, t, Sxx = signal.spectrogram(sig, nperseg=256, noverlap=128)
+    Sxx = (np.dstack([Sxx] * num_channels)).reshape(129, 124, -1)
+
+    return f, t, Sxx
+\end{lstlisting}
+
+After a first inspection of the spectrograms given in figure \ref{fig:spectrograms}, it is obvious that the spectrograms do not contain as much visible features as expected. Previous research \cite{gouda2018speech} also suggested that using log spectrograms is more beneficial than using simple spectrograms.
+
+
+\begin{figure}[h!]
+    \centering
     \includegraphics[width=1\textwidth]{img/9_spectrograms.png}
-    \caption{Samples of nine different spectrograms}
+    \caption{Spectrogram samples of nine different classes}
     \label{fig:spectrograms}
 \end{figure}
 
-\begin{figure}[h]
+\newpage
+
+\subsubsection{Create Log Spectrograms}
+
+In contrast to figure \ref{fig:spectrograms}, the code depicted in listing \ref{code:log_spectrograms} produces log spectrograms which contain more visual features as seen in figure \ref{fig:log_spectrograms} which should be beneficial for the model training. One potential problem however is shown in figure \ref{fig:log_spectrograms} at the "silence" class. The padding with zeroes presents itself with a dark bar at the beginning which might introduce more noise into the dataset. Nevertheless, for this experiment this potential problem is ignored and could be tackled in future work.
+
+\begin{lstlisting}[language=Python, caption=Get log spectrogram code, label=code:log_spectrograms]
+from scipy import signal
+from scipy.io import wavfile
+import numpy as np
+
+def get_log_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10, num_channels=1):
+    (sample_rate, sig) = wavfile.read(audio_path)
+
+    if sig.size < 16000:
+        sig = np.pad(sig, (sample_rate - sig.size, 0), mode='constant')
+    else:
+        sig = sig[0:sample_rate]
+
+    nperseg = int(round(window_size * sample_rate / 1e3))
+    noverlap = int(round(step_size * sample_rate / 1e3))
+
+    # f = array of sample frequencies
+    # t = array of segment times
+    # Sxx = Spectrogram of x. By default, the last axis of Sxx corresponds to the segment times.
+    f, t, Sxx = signal.spectrogram(sig,
+                                   fs=sample_rate,
+                                   window='hann',
+                                   nperseg=nperseg,
+                                   noverlap=noverlap,
+                                   detrend=False)
+    log_spectrogram = np.log(Sxx.T.astype(np.float32) + eps)
+    log_spectrogram = (np.dstack([log_spectrogram] * num_channels)).reshape(99, 161, -1)  
+
+    return f, t, log_spectrogram
+\end{lstlisting}
+
+
+\begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{img/9_log_spectrograms.png}
-    \caption{Samples of nine different log spectrograms}
+    \caption{Log spectrogram samples of nine different classes}
     \label{fig:log_spectrograms}
+\end{figure}
+
+A distinction between 1- and 3-channel log spectrograms has been made because this project uses pre-trained CNN models which are trained on ImageNet data. ImageNet data is in its core based on 3-dimensional RGB data/images while (log) spectrograms are 1-dimensional images and are only depicted in green colors in figure \ref{fig:log_spectrograms} based on the settings in matplotlib which shows grayscale images in a green spectrum. A quick fix to this problem is the duplication of the 1-dimensional spectrogram data and therefore mimicking 3-dimensional RGB data by having the grayscale data copied over three channels as depicted in figure \ref{fig:channel_conversion}.
+
+
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.34\textwidth}
+  \centering
+  \includegraphics[width=0.5\linewidth]{img/grayscale.png}
+  \caption{1-channel log spectrogram}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.34\textwidth}
+  \centering
+  \includegraphics[width=0.5\linewidth]{img/rgb.png}
+  \caption{3-channel RGB image}
+  \label{fig:sub2}
+\end{subfigure}
+\par\bigskip
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{img/grayscale_multiply.png}
+  \caption{Mulitplication of 1-channel log spectrogram}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Conversion between 1-channel and 3-channel log spectrograms}
+\label{fig:channel_conversion}
 \end{figure}
 
 
 
+
+
+\subsection{Models}
+
+
 \begin{enumerate}
-	\item selection of the speech data, description of the data, tuning/adaptation model parameters
+	\item tuning/adaptation model parameters
 	\item types of experiments (generalizations to which unseen conditions, etc. )
 \end{enumerate}
 
@@ -384,7 +577,7 @@ MNIST			& 55,038,988   & 54,929,868   	   & 109,120  \\ \hline
 ResNet50  	& 75,182,988   & 75,029,516 	   & 153,472 \\ \hline	
 \end{tabular}
 \caption{Model complexity ordered by amount of parameters}
-\label{tab:v1_v2_results}
+\label{tab:model_complexity}
 \end{table}
 
 
@@ -451,7 +644,7 @@ MNIST		    & 0.9595 		 & 0.1213      & 0.9039		  & 0.3866	 &	1064.72\\ \hline
 Leightweight CNN    & 0.9487   	 & 0.1564 	   & 0.9332		  &	0.2109	 &  532.73 \\ \hline
 \end{tabular}
 \caption{Final baseline results with Xavier Glorot initialization}
-\label{tab:v1_v2_results}
+\label{tab:final_baseline_results_xavier}
 \end{table}
 
 
@@ -464,7 +657,7 @@ MNIST		  & 0.7005  & 1.0187   & 0.7662 & 0.7237 \\ \hline
 Leight CNN    & 0.7150  & 0.9276  & 0.8114  &	0.5540 \\ \hline
 \end{tabular}
 \caption{Baseline results after one epoch with Xavier Glorot initialization}
-\label{tab:v1_v2_results}
+\label{tab:one_epoch_baseline_results_xavier}
 \end{table}
 
 
@@ -544,7 +737,7 @@ VGG16  		& 0.9723   & 0.0900   & 0.9583	&	0.2011 &  2530.47\\ \hline
 ResNet50  	& 0.9548  & 0.1421 	& 0.9445 &	0.1873	 &  3807.93\\ \hline
 \end{tabular}
 \caption{Final CNN results with with Xavier Glorot initialization}
-\label{tab:v1_v2_results}
+\label{tab:final_cnn_results_xavier}
 \end{table}
 
 \begin{table}[h!]
@@ -557,7 +750,7 @@ VGG16  		& 0.6519   	& 1.3202     &  0.6906	 &	1.3379\\ \hline
 ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
 \end{tabular}
 \caption{CNN results after one epoch with Xavier Glorot initialization}
-\label{tab:v1_v2_results}
+\label{tab:one_epoch_cnn_results_xavier}
 \end{table}
 
 
@@ -633,7 +826,7 @@ Test
  ResNet50  	& 0.9134  	  	& 0.2991  	   & 0.9252	 	  &	0.3055	 &  3653.67\\ \hline
 \end{tabular}
 \caption{Final CNN results with Imagenet initialization}
-\label{tab:v1_v2_results}
+\label{tab:final_cnn_results_imagenet}
 \end{table}
 
 \begin{table}[h!]
@@ -646,7 +839,7 @@ VGG16  		& 0.6307  	 	 & 1.4430    & 0.6706	&	1.2011 \\ \hline
 ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
 \end{tabular}
 \caption{CNN results after one epoch with Imagenet initialization}
-\label{tab:v1_v2_results}
+\label{tab:one_epoch_cnn_results_imagenet}
 \end{table}
 
 
@@ -654,6 +847,20 @@ ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
 \section{Discussion}
 
 \section{Conclusion}
+
+
+
+
+\section{Future Work} \label{future_work}
+
+
+\begin{itemize}
+	\item Use other image representations like spectrograms based on MFCC
+	\item Use recursive layer freezing to investigate which amount of layers would be optimal for transfer learning
+	\item Use additional preprocessing steps like discarding bad audio
+	\item Look further into Batch Normalization
+	\item Look into correlation between accuracy and dimensions of spectrograms
+\end{itemize}
 
 
 
@@ -681,59 +888,6 @@ ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
 \end{itemize}
 
 
-
-\section{Complex stuff}
-\subsection{Domains}
-Let's start with the following definition:
-\begin{definition}\label{def:domain}
-A set $U \subseteq \mathbb{C}$ is a \emph{domain} if:
-\begin{itemize}
-    \item $U$ is open in $\mathbb{C}$, and
-    \item $U$ is connected.
-\end{itemize}
-\end{definition}
-
-
-\subsection{Yumyumyumyum}
-\towrite{an introduction and some examples}
-
-\begin{theorem}[]
-Suppose $n \in \mathbb{Z}$, then the following are equivalent:
-\begin{enumerate}[label=\roman*.]
-    \item $n > 5$.
-    \item $5 > 5$.\todo{This doesn't seem right...}
-    \item For each $n \in n$, we have:
-    \begin{align}\label{eq:truth}
-        n > n+1 > n+1^2 > \dots > n+7.
-    \end{align}
-    where $7$ is an arbitrary element of
-    \begin{align*}
-        \oint_{a}^{b} \supersine \alpha + i \supercosine \beta  db(a).
-    \end{align*}
-\end{enumerate}
-\end{theorem}
-
-\begin{remark}
-Interesting!
-\end{remark}
-\begin{proof}
-See \cite{Rynne2008LinearAnalysis}.
-\end{proof}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=.3\textwidth]{img/in_dei_nomine_feliciter.eps}
-    \caption{Motivational illustration. Similar to \cite{Oort1958,Reed1960}.}
-    \label{fig:logo}
-\end{figure}
-
-\begin{corollary}
-Suppose $U \subseteq \mathbb{C}$ is a domain (see Definition \ref{def:domain}), and $f: \overline{U} \rightarrow \mathbb{C}$ is continuous on $\overline{U}$ and holomorphic on $U$. If $z \mapsto |f(z)|$ is constant on $\partial U$, then $f$ has a zero in $U$.
-\end{corollary}
-\begin{proof}
-If not, consider $\frac{1}{f}$.
-\end{proof}
-The proof of this theorem is illustrated in Figure \ref{fig:logo}.
 
 
 
