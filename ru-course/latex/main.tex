@@ -377,6 +377,19 @@ The method is inspired by \cite{gouda2018speech} where three different models ha
 	\item methodology, types of analyses, selection of the method
 \end{enumerate}
 
+
+Xavier Glorot initialization \cite{glorot2010understanding}
+
+Taken from \cite{gouda2018speech}: For an $m \times x$ dimensional matrix $M, M_{i,j}$ is assigned values selected uniformly from the distribution $[-\epsilon, \epsilon]$, where
+\begin{equation} \label{eq:xavier}
+\epsilon = \frac{\sqrt{6}}{\sqrt{m + n}}
+\end{equation}
+
+
+Xavier initialization is shown in equation \ref{eq:xavier}
+
+
+
 \section{Set-up}
 
 
@@ -545,7 +558,7 @@ A distinction between 1- and 3-channel log spectrograms has been made because th
 \begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{img/grayscale_multiply.png}
-  \caption{Mulitplication of 1-channel log spectrogram}
+  \caption{Duplication of 1-channel log spectrogram}
   \label{fig:sub2}
 \end{subfigure}
 \caption{Conversion between 1-channel and 3-channel log spectrograms}
