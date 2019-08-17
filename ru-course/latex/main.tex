@@ -25,7 +25,7 @@
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{gray}{0.85}
+\definecolor{backcolour}{gray}{0.95}
  
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
@@ -309,12 +309,7 @@ This framework originally comes from \cite{chen2014small}. The only difference i
 \textcolor{red}{Include summary and say why the Speech Commands Dataset is a good fit for this thesis. You probably do not need a Voice-activity detection (VAD) system here.}
 
 
-\textbf{Properties}
 
-\begin{quote}
-The final dataset consisted of 105,829 utterances of 35 words[...].\\
-Each utterance is stored as a one-second (or less) WAVE format file, with the sample data encoded as linear 16-bit single-channel PCM values, at a 16 KHz rate. There are 2,618 speaker recorded, each with a unique eight-digit hexadecimal identifier assigned as described above. The uncompressed files take up approximately 3.8 GB on disk, and can be stored as a 2.7 GB gzip-compressed tar archive.
-\end{quote}
 
 \textbf{Top-One Error}
 
@@ -396,13 +391,61 @@ Xavier initialization is shown in equation \ref{eq:xavier}
 
 \subsection{Dataset}
 
-Write something about the Speech Recogntion Dataset and the class distribution before and after merging for the competition.
+The TensorFlow Speech Recognition Challenge hosted by Kaggle \cite{kaggle_challenge} is using the Speech Commands Data Set v0.01 and contains 64,727 audio files and 31 class labels. The data set is publicly available \cite{scd_v1} and is explained in more detail by Warden \cite{warden2018speech}. The characteristics of the original v0.01 data set are explained as follows by Warden:
 
+\begin{quote}
+Each utterance is stored as a one-second (or less) WAVE format file, with the sample data encoded as linear 16-bit single-channel PCM values, at a 16 KHz rate. There are 2,618 speaker recorded, each with a unique eight-digit hexadecimal identifier assigned as described above. The uncompressed files take up approximately 3.8 GB on disk, and can be stored as a 2.7 GB gzip-compressed tar archive.
+\end{quote}
+
+The original class distribution of 31 words had to be reduced to 12 words to comply with the Kaggle competition guidelines, namely 10 concrete words \texttt{yes, no, up, down, left, right, on, off, stop, go} and two placeholder words \texttt{unknown, silence}. Words which do not belong to the 10 concrete words are merged into the \texttt{unknown} class label, while background noise and simple silence are merged into the \texttt{silence} class label. Provided files are further explained on the competition page \cite{kaggle_challenge} as follows:
+
+\begin{itemize}
+	\item \textbf{train.7z}: Contains a few informational files and a folder of audio files. The audio folder contains subfolders with 1 second clips of voice commands, with the folder name being the label of the audio clip. There are more labels that should be predicted. The labels you will need to predict in Test are \texttt{yes, no, up, down, left, right, on, off, stop, go}. Everything else should be considered either \texttt{unknown} or \texttt{silence}. The folder \texttt{\_background\_noise\_} contains longer clips of "silence" that you can break up and use as training input. The files contained in the training audio are not uniquely named across labels, but they are unique if you include the label folder. For example, \texttt{00f0204f\_nohash\_0.wav} is found in 14 folders, but that file is a different speech command in each folder. The files are named so the first element is the subject id of the person who gave the voice command, and the last element indicated repeated commands. Repeated commands are when the subject repeats the same word multiple times. Subject id is not provided for the test data, and you can assume that the majority of commands in the test data were from subjects not seen in train. You can expect some inconsistencies in the properties of the training data (e.g., length of the audio).
+	\item \textbf{test.7z}: Contains an audio folder with 150,000+ files in the format \texttt{clip\_000044442.wav}. The task is to predict the correct label. Not all of the files are evaluated for the leaderboard score.
+	\item \textbf{sample\_submission.csv}: A sample submission file in the correct format.
+\end{itemize}
+
+After merging words which do not comply with the competition guidelines, the class distribution changed from a balanced distribution to a rather unbalanced distribution towards the "unknown" label as depicted in table \ref{tab:class_distribution}
+
+
+\begin{table}[h!]
+\center
+\begin{tabular}{|l|l|l|}
+\hline
+Class & Frequency & Percentage \\ \hline
+unknown & '41039 & 0.634032  \\ \hline
+stop & 2380 & 0.036770 \\ \hline
+yes & 2377 & 0.036723  \\ \hline
+up & 2375 &  0.036693\\ \hline
+no & 2375 & 0.036693 \\ \hline
+go & 2372 & 0.036646 \\ \hline
+right & 2367 & 0.036569 \\ \hline
+on & 2367 & 0.036569 \\ \hline
+down & 2359 & 0.036445 \\ \hline
+off & 2357 & 0.036414 \\ \hline
+left & 2353 & 0.036353\\ \hline
+silence & 6 & 0.000093\\ \hline
+\end{tabular}
+\caption{Descending class distribution of merged data set}
+\label{tab:class_distribution}
+\end{table}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 \subsection{Preprocessing}
 
-The preprocessing pipeline is described in further detail in the following subsections. The pipeline is rather simple at the moment and provides room for improvement which is described in section \ref{future_work}. The overall preprocessing approach is depicted in figure \ref{fig:preprocessing}.
-
+The preprocessing pipeline is described in further detail in the following subsections. The pipeline is rather simple at the moment and provides room for improvement which is described in section \ref{future_work}. The overall preprocessing approach is depicted in figure \ref{fig:preprocessing}. A Voice-activity detection (VAD) system 
+has not been used based on the simple nature of the one-second audio clips.
 
 \begin{figure}[h]
     \centering
@@ -440,7 +483,7 @@ Path & Label \\ \hline
 \end{table}
 
 
-The different paths were iterated and the wav files were load into memory by using the \texttt{scipy.io.wavfile} package. The sample rate of the wav files remains at 160000 KHz. 
+The different paths were iterated and the wav files were load into memory by using the \texttt{scipy.io.wavfile} package. The sample rate of the wav files remains at 16000 KHz. 
 
 
 \subsubsection{Check Wav Length}
@@ -481,7 +524,7 @@ def get_spectrogram(audio_path, num_channels=1):
     return f, t, Sxx
 \end{lstlisting}
 
-After a first inspection of the spectrograms given in figure \ref{fig:spectrograms}, it is obvious that the spectrograms do not contain as much visible features as expected. Previous research \cite{gouda2018speech} also suggested that using log spectrograms is more beneficial than using simple spectrograms.
+After a first inspection of the spectrograms given in figure \ref{fig:spectrograms}, it is obvious that the spectrograms do not contain as much visible features as expected. Previous research \cite{gouda2018speech} also suggested that using log spectrograms is more beneficial than using simple spectrograms. Spectrograms were reshaped into \texttt{129 x 124} dimensions which differs from the log spectrograms but does not influence the experiment in any way because soley log spectrograms were used for training purposes.
 
 
 \begin{figure}[h!]
@@ -495,7 +538,7 @@ After a first inspection of the spectrograms given in figure \ref{fig:spectrogra
 
 \subsubsection{Create Log Spectrograms}
 
-In contrast to figure \ref{fig:spectrograms}, the code depicted in listing \ref{code:log_spectrograms} produces log spectrograms which contain more visual features as seen in figure \ref{fig:log_spectrograms} which should be beneficial for the model training. One potential problem however is shown in figure \ref{fig:log_spectrograms} at the "silence" class. The padding with zeroes presents itself with a dark bar at the beginning which might introduce more noise into the dataset. Nevertheless, for this experiment this potential problem is ignored and could be tackled in future work.
+In contrast to figure \ref{fig:spectrograms}, the code depicted in listing \ref{code:log_spectrograms} produces log spectrograms which contain more visual features as seen in figure \ref{fig:log_spectrograms} which should be beneficial for the model training. One potential problem however is shown in figure \ref{fig:log_spectrograms} at the "silence" class. The padding with zeroes presents itself with a dark bar at the beginning which might introduce more noise into the dataset. Nevertheless, for this experiment this potential problem is ignored and could be tackled in future work. Log spectrograms were reshaped into \texttt{99 x 161} dimensions.
 
 \begin{lstlisting}[language=Python, caption=Get log spectrogram code, label=code:log_spectrograms]
 from scipy import signal
@@ -536,7 +579,7 @@ def get_log_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10, num
     \label{fig:log_spectrograms}
 \end{figure}
 
-A distinction between 1- and 3-channel log spectrograms has been made because this project uses pre-trained CNN models which are trained on ImageNet data. ImageNet data is in its core based on 3-dimensional RGB data/images while (log) spectrograms are 1-dimensional images and are only depicted in green colors in figure \ref{fig:log_spectrograms} based on the settings in matplotlib which shows grayscale images in a green spectrum. A quick fix to this problem is the duplication of the 1-dimensional spectrogram data and therefore mimicking 3-dimensional RGB data by having the grayscale data copied over three channels as depicted in figure \ref{fig:channel_conversion}.
+A distinction between 1- and 3-channel log spectrograms has been made because this project uses pre-trained CNN models which are trained on ImageNet data. ImageNet data is in its core based on 3-dimensional RGB data/images while (log) spectrograms are 1-dimensional images and are only depicted in green colors in figure \ref{fig:log_spectrograms} based on the settings in \texttt{matplotlib} package which shows grayscale images in a green spectrum. A quick fix to this problem is the duplication of the 1-dimensional spectrogram data and therefore mimicking 3-dimensional RGB data by having the grayscale data copied over three channels as depicted in figure \ref{fig:channel_conversion}.
 
 
 
@@ -567,15 +610,12 @@ A distinction between 1- and 3-channel log spectrograms has been made because th
 
 
 
-
+\newpage
 
 \subsection{Models}
 
-
-\begin{enumerate}
-	\item tuning/adaptation model parameters
-	\item types of experiments (generalizations to which unseen conditions, etc. )
-\end{enumerate}
+The choice of models can be divided into the following groups: \textbf{Baseline} and \textbf{CNN models with pre-trained ImageNet weights}. Table \ref{tab:model_complexity} shows an overview of the evaluated models in this project with the complexity of each model based on its amount of trainable parameters.\\
+MNIST and the lightweight CNN model are used as a baseline because they showed good performance in previous work when applied to spectrograms. The other models, namely VGG16, Inception V3 and ResNet were used because they each won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in their respective years and differ in their architecture. The baseline models were initialized with Xavier initialization and their performance were not evaluated with ImageNet weight initialization.\\
 
 
 \begin{table}[h!]
@@ -592,6 +632,34 @@ ResNet50  	& 75,182,988   & 75,029,516 	   & 153,472 \\ \hline
 \caption{Model complexity ordered by amount of parameters}
 \label{tab:model_complexity}
 \end{table}
+
+Models have been trained over 10 epochs each with either Xavier Glorot initialization or pre-trained ImageNet weights while all layers remained trainable which is against traditional transfer learning techniques. After 10 epochs the final accuracy has been evaluated in order to see if pre-trained ImageNet weights would give a boost to the convergence rate. Another evaluation has been made after the first epoch with regards to accuracy to see if pre-trained ImageNet weights would give a higher start accuracy based on the already learned image features from another domain than the provided spectrograms.\\
+
+
+
+
+
+Drawing architectures with draw.io?
+
+
+
+\subsubsection{Baseline models}
+
+\begin{itemize}
+	\item MNIST: show source, architecture and what has been changed (BatchNormalization)
+	\item Leightweight CNN: show source, architecture,  and what has been changed
+\end{itemize}
+
+
+
+\subsubsection{CNN models}
+
+\begin{itemize}
+	\item VGG16: show source, architecture, paper, won competition and what has been changed?
+	\item Inception V3: show source, architecture, paper, won competition and what has been changed? What differs in this architecture from VGG16?
+	\item ResNet50: show source, architecture, paper, won compeition and what has been changed? SkipConnection as main difference
+\end{itemize}
+
 
 
 
