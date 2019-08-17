@@ -483,7 +483,7 @@ Path & Label \\ \hline
 \end{table}
 
 
-The different paths were iterated and the wav files were load into memory by using the \texttt{scipy.io.wavfile} package. The sample rate of the wav files remains at 16000 KHz. 
+The different paths were iterated and the wav files were load into memory by using the \texttt{scipy.io.wavfile} package. The sample rate of the wav files remains at 16000 KHz.  A reduction to a sampling rate of 8000 KHz would also be possible to reduce the used memory space for the final training set.
 
 
 \subsubsection{Check Wav Length}
@@ -579,7 +579,7 @@ def get_log_spectrogram(audio_path, window_size=20, step_size=10, eps=1e-10, num
     \label{fig:log_spectrograms}
 \end{figure}
 
-A distinction between 1- and 3-channel log spectrograms has been made because this project uses pre-trained CNN models which are trained on ImageNet data. ImageNet data is in its core based on 3-dimensional RGB data/images while (log) spectrograms are 1-dimensional images and are only depicted in green colors in figure \ref{fig:log_spectrograms} based on the settings in \texttt{matplotlib} package which shows grayscale images in a green spectrum. A quick fix to this problem is the duplication of the 1-dimensional spectrogram data and therefore mimicking 3-dimensional RGB data by having the grayscale data copied over three channels as depicted in figure \ref{fig:channel_conversion}.
+A distinction between 1- and 3-channel log spectrograms has been made because this project uses pre-trained CNN models which are trained on ImageNet data. ImageNet data is in its core based on 3-dimensional RGB data/images while (log) spectrograms are 1-dimensional images and are only depicted in green colors in figure \ref{fig:log_spectrograms} based on the settings in the \texttt{matplotlib} package which shows grayscale images in a green spectrum. A quick fix to this problem is the duplication of the 1-dimensional spectrogram data and therefore mimicking 3-dimensional RGB data by having the grayscale data copied over three channels as depicted in figure \ref{fig:channel_conversion}.
 
 
 
@@ -615,7 +615,7 @@ A distinction between 1- and 3-channel log spectrograms has been made because th
 \subsection{Models}
 
 The choice of models can be divided into the following groups: \textbf{Baseline} and \textbf{CNN models with pre-trained ImageNet weights}. Table \ref{tab:model_complexity} shows an overview of the evaluated models in this project with the complexity of each model based on its amount of trainable parameters.\\
-MNIST and the lightweight CNN model are used as a baseline because they showed good performance in previous work when applied to spectrograms. The other models, namely VGG16, Inception V3 and ResNet were used because they each won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in their respective years and differ in their architecture. The baseline models were initialized with Xavier initialization and their performance were not evaluated with ImageNet weight initialization.\\
+MNIST and the Lightweight CNN model are used as a baseline because they showed good performance in previous work when applied to spectrograms. The other models, namely VGG16, Inception V3 and ResNet were used because they each won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in their respective years and differ in their architecture. The baseline models were initialized with Xavier initialization and their performances were not evaluated with ImageNet weight initialization.\\
 
 
 \begin{table}[h!]
@@ -623,7 +623,7 @@ MNIST and the lightweight CNN model are used as a baseline because they showed g
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{Model} & \textbf{Total params} & \textbf{Trainable params} & \textbf{Non-trainable params} \\ \hline
-Leightweight CNN & 723,968 & 723,454 & 514 \\ \hline
+Lightweight CNN & 723,968 & 723,454 & 514 \\ \hline
 VGG16  		& 23,676,748   & 23,659,340        & 17,408 \\ \hline	
 Inception V3	& 29,185,836   & 29,137,068  	   & 48,768	 \\ \hline
 MNIST			& 55,038,988   & 54,929,868   	   & 109,120  \\ \hline
@@ -633,32 +633,152 @@ ResNet50  	& 75,182,988   & 75,029,516 	   & 153,472 \\ \hline
 \label{tab:model_complexity}
 \end{table}
 
-Models have been trained over 10 epochs each with either Xavier Glorot initialization or pre-trained ImageNet weights while all layers remained trainable which is against traditional transfer learning techniques. After 10 epochs the final accuracy has been evaluated in order to see if pre-trained ImageNet weights would give a boost to the convergence rate. Another evaluation has been made after the first epoch with regards to accuracy to see if pre-trained ImageNet weights would give a higher start accuracy based on the already learned image features from another domain than the provided spectrograms.\\
+Each model has been trained over 10 epochs with either Xavier Glorot initialization while the CNN models have also been using pre-trained ImageNet weights while all layers remained trainable which is against traditional transfer learning techniques where a certain amount of layers are not trainable any more (freezing layers). After 10 epochs the final accuracy has been evaluated in order to see if pre-trained ImageNet weights would give a boost to the convergence rate. Another evaluation has been made after the first epoch with regards to accuracy to see if pre-trained ImageNet weights would give a higher start accuracy based on the already learned image features from another domain than the provided spectrograms, namely general images in the ImageNet dataset.\\
+
+All models used Rectified Linear Unit as depicted in figure \ref{fig:relu} as their activation function due to its success in the domain of image classification \cite{dahl2013improving}. However, Softmax is applied as the final activation function in all output layers in order get proper probabiliy scores.
 
 
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/relu.png}
+    \caption{Rectified Linear Unit as activation function}
+    \label{fig:relu}
+\end{figure}
+
+Throughout all used architectures Dropout \cite{srivastava2014dropout} with a value of $0.2$ has been used as a regularization technique as depicted in figure \ref{fig:dropout} and as proposed in \cite{dahl2013improving}.
 
 
-Drawing architectures with draw.io?
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.65\textwidth]{img/dropout.png}
+    \caption{Dropout as generalization technique}
+    \label{fig:dropout}
+\end{figure}
+
+Batch normalization as depicted in figure \ref{fig:dropout} and proposed in \cite{ioffe2015batch} has been applied to all architectures due to the memory space consumption of the training set and the need to use a batch size of 32. Batch normalization showed good results in boosting the overall training process of feedforward neural networks with fewer training steps, acts as a additional regularization technique and reduces internal covariate shift by normalizing each batch respectively. 
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.65\textwidth]{img/bn.png}
+    \caption{Batch normalization to speed up training and reducing internal covariate shift}
+    \label{fig:dropout}
+\end{figure}
+
+
+The following sections include descriptions of the architecture and special characteristics of each model. 
 
 
 
 \subsubsection{Baseline models}
 
-\begin{itemize}
-	\item MNIST: show source, architecture and what has been changed (BatchNormalization)
-	\item Leightweight CNN: show source, architecture,  and what has been changed
-\end{itemize}
 
+\noindent\textbf{MNIST}\\
+
+The chosen architecture of the so called "MNIST" model is burrowed from the TensorFlow repository \cite{mnist_code} and showed an accuracy of 98\% on the task for grayscale digit recognition \cite{deng2012mnist}. In order to guarantee consistent comparison conditions, Batch normalization layers have been added. The MNIST architecture therefore looks as follows:
+
+\begin{enumerate}
+	\item 2D Convolutional layer with 32 features, kernel size of $5 \times 5$ and ReLU activation function.
+	\item MaxPooling layer with a pool size of $2 \times 2$
+	\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+	\item 2D Convolutional layer with 64 features, kernel size of $3 \times 3$ and ReLU activation function.
+	\item MaxPooling layer with a pool size of $2 \times 2$
+	\item Dropout layer with $p = 0.2$
+	\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+	\item Dense layer with 1024 neurons and ReLU activation
+	\item Dropout layer with $p = 0.2$
+	\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+	\item Dense layer with 12 neurons (number of classes) and Softmax
+\end{enumerate}
+
+
+
+\noindent\textbf{Lightweight CNN}\\
+
+The "Lightweight CNN" has been burrowed from the Kaggle competition in order to have another baseline modes which is known to perform on a solid basis with spectrograms \footnote{\url{https://www.kaggle.com/alphasis/light-weight-cnn-lb-0-74}}. The main architecture looks as follows:
+
+
+\begin{enumerate}
+		\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+		\item 2x 2D Convolutional layer with 8 features, kernel size of $2 \times 2$ and ReLU activation function.
+		\item MaxPooling layer with a pool size of $2 \times 2$
+		\item Dropout layer with $p = 0.2$
+		\item 2x 2D Convolutional layer with 16 features, kernel size of $3 \times 3$ and ReLU activation function.
+		\item MaxPooling layer with a pool size of $2 \times 2$
+		\item Dropout layer with $p = 0.2$
+		2D Convolutional layer with 32 features, kernel size of $3 \times 3$ and ReLU activation function.
+			\item MaxPooling layer with a pool size of $2 \times 2$
+			\item Dropout layer with $p = 0.2$
+		\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+			\item Dense layer with 128 neurons and ReLU activation function
+		\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+		\item Dense layer with 128 neurons and ReLU activation function
+		\item Dense layer with 12 neurons (number of classes) and Softmax
+		
+\end{enumerate}
 
 
 \subsubsection{CNN models}
 
-\begin{itemize}
-	\item VGG16: show source, architecture, paper, won competition and what has been changed?
-	\item Inception V3: show source, architecture, paper, won competition and what has been changed? What differs in this architecture from VGG16?
-	\item ResNet50: show source, architecture, paper, won compeition and what has been changed? SkipConnection as main difference
-\end{itemize}
+The top layers of each CNN model have been removed in order to take other input tensors than the usual ones found in the ImageNet database which are \texttt{224x224} pixels to fit the log spectrogram dimensions. The here called "standard top layer configuration" has been stacked at the top of every CNN model in order to have a consistent configuration and to work with log spectrograms. The standard top layer configuration looks as follows:
+
+\begin{enumerate}
+	\item Dropout layer with $p = 0.2$
+	\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+	\item Dense layer with 1024 neurons and ReLU activation function
+	\item Batch normalization layer with $momentum=0.99, \epsilon=0.001$
+	\item Dense layer with 1024 neurons and ReLU activation
+	\item Dense layer with 12 neurons (number of classes) and Softmax activation function
+\end{enumerate}
+
+
+
+
+\noindent\textbf{VGG16}\\
+
+The VGG architecture has been proposed in 2014 and incorporates increasing depth using an architecture with very small $(3 \times 3)$ convolution filters and a depth of 16 to 19 weight layers \cite{simonyan2014very}. The architecture \footnote{\url{https://neurohive.io/en/popular-networks/vgg16/}} depicted in figure \ref{fig:vgg16_architecture} also won ImageNet Challenge in 2014.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{img/vgg16_architecture.png}
+    \caption[VGG16 architecture]{VGG16 architecture}
+    \label{fig:vgg16_architecture}
+\end{figure}
+
+Because VGG16 is such a commonly used CNN model in the domain of image classification and used in prior work with keyword spotting, it is also used in this project as the default CNN. Furthermore, Keras also kindly provides the Python code and the pre-trained ImageNet weights for this model.\\
+
+
+
+
+\noindent\textbf{Inception V3}\\
+
+The Inception V3 architecture is the winner of the ImageNet Challenge of 2015 and outperformed the VGG architecture \cite{szegedy2016rethinking}. As depicted in figure \ref{fig:inception}, this architecture is 42 layers deep while the computation cost is only about 2.5 higher than that of GoogLeNet, and much more efficient than that of VGG  \footnote{\url{https://medium.com/@sh.tsang/review-inception-v3-1st-runner-up-image-classification\\-in-ilsvrc-2015-17915421f77c}}. This efficiency is accomplished by using an efficient grid size reduction compared to a too greedy max pooling operation in the convolutional layer like VGG16.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{img/inception.png}
+    \caption{Inception-v3 Architecture (Batch Norm and ReLU are used after Conv)}
+    \label{fig:inception}
+\end{figure}
+
+
+In order to draw good conlusions with regards to the benefits of the ImageNet initialization while being model architecture agnostic at the same time, Inception V3 differs from the VGG16 model sufficiently to use it as the second CNN model. Furthermore, Keras also kindly provides the Python code and the pre-trained ImageNet weights for this model.\\
+\newpage
+
+\noindent\textbf{ResNet50}\\
+
+Deep residual networks outperformed the VGG architecture in the task of image classification by being eight times deeper than VGG nets but still having lower complexity \cite{he2016deep}. So called "Skip connections" which are the building blocks of residual learning can be used to skip the training of a few layers as depicted in figure \ref{fig:skip_connection}.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/skip_connections.png}
+    \caption{Residual learning: a building block.}
+    \label{fig:skip_connection}
+\end{figure}
+
+Deep residual learning has also been applied to the domain of small-footprint keyword spotting and outperformed classical CNN architectures \cite{tang2018deep} which makes it a good fit for this project. Keras standard "ResNet50" model has been used with the standard top layer configuration.
 
 
 
@@ -666,11 +786,20 @@ Drawing architectures with draw.io?
 \section{Experiments}
 
 
-\subsection{Baseline}
+\begin{itemize}
+	\item Computer settings: CPU, RAM, GPU, Python version, 
+	\item 10 epochs
+	\item Keras version, which pre-trained weights
+	\item 10-fold cross validation
+	\item Batch size
+	\item Size of inputs
+	\item number of channels, variety in inputs=
+	\item early stopping has been discarded in favor of fixed epoch size
+	\item accuracy and loss
+	\item Adam optimizer for optimization technique
+	\item Batch generator which works with python generator to reduce memory consumption
+\end{itemize}
 
-
-
-\subsection{CNNs}
 
 
 
