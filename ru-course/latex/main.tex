@@ -385,11 +385,11 @@ Xavier initialization is shown in equation \ref{eq:xavier}
 
 
 
-\section{Set-up}
+\section{Set-up} \label{setup}
 
 
 
-\subsection{Dataset}
+\subsection{Dataset} 
 
 The TensorFlow Speech Recognition Challenge hosted by Kaggle \cite{kaggle_challenge} is using the Speech Commands Data Set v0.01 and contains 64,727 audio files and 31 class labels. The data set is publicly available \cite{scd_v1} and is explained in more detail by Warden \cite{warden2018speech}. The characteristics of the original v0.01 data set are explained as follows by Warden:
 
@@ -524,7 +524,7 @@ def get_spectrogram(audio_path, num_channels=1):
     return f, t, Sxx
 \end{lstlisting}
 
-After a first inspection of the spectrograms given in figure \ref{fig:spectrograms}, it is obvious that the spectrograms do not contain as much visible features as expected. Previous research \cite{gouda2018speech} also suggested that using log spectrograms is more beneficial than using simple spectrograms. Spectrograms were reshaped into \texttt{129 x 124} dimensions which differs from the log spectrograms but does not influence the experiment in any way because soley log spectrograms were used for training purposes.
+After a first inspection of the spectrograms given in figure \ref{fig:spectrograms}, it is obvious that the spectrograms do not contain as much visible features as expected. Previous research \cite{gouda2018speech} also suggested that using log spectrograms is more beneficial than using simple spectrograms. Spectrograms were reshaped into \texttt{129 x 124} dimensions which differs from the log spectrograms but does not influence the experiment in any way because solely log spectrograms were used for training purposes.
 
 
 \begin{figure}[h!]
@@ -612,7 +612,7 @@ A distinction between 1- and 3-channel log spectrograms has been made because th
 
 \newpage
 
-\subsection{Models}
+\subsection{Models} \label{models}
 
 The choice of models can be divided into the following groups: \textbf{Baseline} and \textbf{CNN models with pre-trained ImageNet weights}. Table \ref{tab:model_complexity} shows an overview of the evaluated models in this project with the complexity of each model based on its amount of trainable parameters.\\
 MNIST and the Lightweight CNN model are used as a baseline because they showed good performance in previous work when applied to spectrograms. The other models, namely VGG16, Inception V3 and ResNet were used because they each won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in their respective years and differ in their architecture. The baseline models were initialized with Xavier initialization and their performances were not evaluated with ImageNet weight initialization.\\
@@ -785,27 +785,44 @@ Deep residual learning has also been applied to the domain of small-footprint ke
 
 \section{Experiments}
 
+The main factors in this experiment are the accuracy and loss metrics for both the train and validation set after (i) the first epoch and (ii) after the last epoch which is set to 10 for all models.\\
 
-\begin{itemize}
-	\item Computer settings: CPU, RAM, GPU, Python version, 
-	\item 10 epochs
-	\item Keras version, which pre-trained weights
-	\item 10-fold cross validation
-	\item Batch size
-	\item Size of inputs
-	\item number of channels, variety in inputs=
-	\item early stopping has been discarded in favor of fixed epoch size
-	\item accuracy and loss
-	\item Adam optimizer for optimization technique
-	\item Batch generator which works with python generator to reduce memory consumption
-\end{itemize}
+\begin{enumerate}
+	\item[i] The inspection of the first epoch should show if there are higher accuracy/lower loss values at the beginning of the training process depending which initialization strategy was chosen
+	\item[ii] The inspection of the last epoch should show if there are higher accuracy/lower loss values at the end of the training process and if the convergence rate is higher towards a maximum depending which initialization strategy was chosen
+\end{enumerate}
+
+The first part of the experiment focuses on the baseline models, namely MNIST and the lightweight CNN. These models are not initialized with pre-trained ImageNet weights but solely with Xavier Glorot initialization. The baseline models serve as a starting point with regards to accuracy and loss values.\\
+
+The second part of the experiment focuses on the CNN models for which pre-trained ImageNet weights exist. The models are evaluated with regards to point (i) and (ii) with Xavier Glorot Initialization and with pre-trained ImageNet weights.\\
+
+The results of the first part are used for evaluationg the overall performance of the CNN models while the second part serves to answer the main research question if pre-trained ImageNet weights are beneficial when it comes to the task of speech recognition on spectrograms. All other parameters which are descibed in section \ref{models} remain the same.
 
 
 
 
 \section{Analysis and Results}
 
+The following sections contain the results of the previously described experimental setup.
+
 \subsection{Baseline}
+
+According to table \ref{tab:one_epoch_baseline_results_xavier}, the initial values of the MNIST and lightweight CNN model do not differ significantly while the lightweight CNN performs slighty better on both the training and validation set. The training accuracy is $\approx 70\%$ for both models at the beginning and should serve as the baseline accuracy value for later comparison.
+
+\begin{table}[h!]
+\center
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss}\\ \hline
+MNIST		  & 0.7005  & 1.0187   & 0.7662 & 0.7237 \\ \hline
+Lightweight CNN    & 0.7150  & 0.9276  & 0.8114  &	0.5540 \\ \hline
+\end{tabular}
+\caption{Baseline results after one epoch with Xavier Glorot initialization}
+\label{tab:one_epoch_baseline_results_xavier}
+\end{table}
+
+During the training process a clear convergence towards a maximum is evident in both the MNIST and lightweight CNN model as depicted in figure \ref{fig:mnist_ten_epochs} and \ref{fig:lightweight_cnn_ten_epochs} respectively. 
+
 
 \begin{figure}[h!]
 \centering
@@ -857,26 +874,31 @@ Leightweight CNN    & 0.9487   	 & 0.1564 	   & 0.9332		  &	0.2109	 &  532.73 \\
 \label{tab:final_baseline_results_xavier}
 \end{table}
 
+The final training accuracies of both models also do not differ significantly according to table \ref{tab:final_baseline_results_xavier} and are $\approx 95\%$.
+
+\newpage
+
+\subsection{CNNs}
+
+The following subsections contain the results of the three different CNN models, namely VGG16, Inception V3 and ResNet50 with the Xavier Glorot initialization and the pre-trained ImageNet weights initialization.
+
+
+\subsubsection{Xavier initialization}
+
+
 
 \begin{table}[h!]
 \center
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
 \textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss}\\ \hline
-MNIST		  & 0.7005  & 1.0187   & 0.7662 & 0.7237 \\ \hline
-Leight CNN    & 0.7150  & 0.9276  & 0.8114  &	0.5540 \\ \hline
+Inception V3 & 0.6539 	& 1.4176 	 &  0.6778	 & 1.1090\\ \hline
+VGG16  		& 0.6519   	& 1.3202     &  0.6906	 &	1.3379\\ \hline
+ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
 \end{tabular}
-\caption{Baseline results after one epoch with Xavier Glorot initialization}
-\label{tab:one_epoch_baseline_results_xavier}
+\caption{CNN results after one epoch with Xavier Glorot initialization}
+\label{tab:one_epoch_cnn_results_xavier}
 \end{table}
-
-
-\subsection{CNNs}
-
-
-
-
-\subsubsection{Xavier initialization}
 
 
 \begin{figure}[h!]
@@ -950,18 +972,7 @@ ResNet50  	& 0.9548  & 0.1421 	& 0.9445 &	0.1873	 &  3807.93\\ \hline
 \label{tab:final_cnn_results_xavier}
 \end{table}
 
-\begin{table}[h!]
-\center
-\begin{tabular}{|l|l|l|l|l|l|}
-\hline
-\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss}\\ \hline
-Inception V3 & 0.6539 	& 1.4176 	 &  0.6778	 & 1.1090\\ \hline
-VGG16  		& 0.6519   	& 1.3202     &  0.6906	 &	1.3379\\ \hline
-ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
-\end{tabular}
-\caption{CNN results after one epoch with Xavier Glorot initialization}
-\label{tab:one_epoch_cnn_results_xavier}
-\end{table}
+
 
 
 \subsubsection{Imagenet weight initialization}
@@ -1056,9 +1067,13 @@ ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
 
 \section{Discussion}
 
+The lightweight CNN has a higher initial and final accuracy while having the lowest amounts of trainable parameters and only takes half the training time compared to the MNIST model.
+
+
+
 \section{Conclusion}
 
-
+Unfortunately, the hypothesis that pre-trained ImageNet weights as an initialization strategy for the task of speech recognition would be beneficial could not be proven.
 
 
 \section{Future Work} \label{future_work}
