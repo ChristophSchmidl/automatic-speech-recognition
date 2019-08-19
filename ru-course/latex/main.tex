@@ -885,6 +885,8 @@ The following subsections contain the results of the three different CNN models,
 
 \subsubsection{Xavier initialization}
 
+All three CNN models lay in the same range of initial accuracy values which is between 65\% and 70\% but still is below the initial values of the baseline models. Resnet performed the best in the initial run from all three models with about 4 \% higher accuracy than VGG16 and Inception V3.
+
 
 
 \begin{table}[h!]
@@ -900,6 +902,24 @@ ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
 \label{tab:one_epoch_cnn_results_xavier}
 \end{table}
 
+When it comes to the final accuracy values as depicted in table \ref{tab:final_cnn_results_xavier}, only Inception V3 performed worse than the baseline models while ResNet performed equally well as MNIST . VGG16 reached the highest training accuracy with about 97\%. So, VGG16 started with the lowest initial training accuracy but achieved the highest training accuracy at the end of 10 epochs from the three CNN models.\\
+According to figure \ref{fig:inception_v3_ten_epochs_xavier}, Inception V3 started with some heavy fluctuation in the beginning until the third epoch and then converged towards a maximum with regards to accuracy. 
+
+\begin{table}[h!]
+\center
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss} & \textbf{Time (sec)}\\ \hline
+Inception V3	& 0.9338 & 0.2238  & 0.9427	& 0.1868 &	2332.23\\ \hline
+VGG16  		& 0.9723   & 0.0900   & 0.9583	&	0.2011 &  2530.47\\ \hline
+ResNet50  	& 0.9548  & 0.1421 	& 0.9445 &	0.1873	 &  3807.93\\ \hline
+\end{tabular}
+\caption{Final CNN results with with Xavier Glorot initialization}
+\label{tab:final_cnn_results_xavier}
+\end{table}
+
+
+\newpage
 
 \begin{figure}[h!]
 \centering
@@ -919,7 +939,7 @@ ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
 \label{fig:inception_v3_ten_epochs_xavier}
 \end{figure}
 
-
+VGG16 and ResNet converged more smoothly in contrast to Inception V3 when it comes to accuracy values and did not encounter fluctuation as Inception V3 as depicted in figure \ref{fig:vgg16_ten_epochs_xavier} and \ref{fig:resnet50_ten_epochs_xavier} respectively.
 
 
 \begin{figure}[h!]
@@ -959,25 +979,45 @@ ResNet50  	& 0.6916  	& 1.2478 	 &  0.6351	 &	5.7467\\ \hline
 \end{figure}
 
 
-\begin{table}[h!]
-\center
-\begin{tabular}{|l|l|l|l|l|l|}
-\hline
-\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss} & \textbf{Time (sec)}\\ \hline
-Inception V3	& 0.9338 & 0.2238  & 0.9427	& 0.1868 &	2332.23\\ \hline
-VGG16  		& 0.9723   & 0.0900   & 0.9583	&	0.2011 &  2530.47\\ \hline
-ResNet50  	& 0.9548  & 0.1421 	& 0.9445 &	0.1873	 &  3807.93\\ \hline
-\end{tabular}
-\caption{Final CNN results with with Xavier Glorot initialization}
-\label{tab:final_cnn_results_xavier}
-\end{table}
+
 
 
 
 
 \subsubsection{Imagenet weight initialization}
 
-Test
+The initial values of all three CNN models initialized with the pre-trained ImageNet weights lay around 62\% and 63\% depicted in table \ref{tab:one_epoch_cnn_results_imagenet}. These values are worse than the baseline model values shown in table \ref{tab:one_epoch_baseline_results_xavier} and the CNN models which are initialized with Xavier Glorot initialization shown in table \ref{tab:one_epoch_cnn_results_xavier}.
+
+
+\begin{table}[h!]
+\center
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss}\\ \hline
+Inception V3 & 0.6268  		 & 1.7132  	 & 0.6315	& 2.0153	\\ \hline
+VGG16  		& 0.6307  	 	 & 1.4430    & 0.6706	&	1.2011 \\ \hline
+ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
+\end{tabular}
+\caption{CNN results after one epoch with Imagenet initialization}
+\label{tab:one_epoch_cnn_results_imagenet}
+\end{table}
+
+The final accuracy values as shown in table \ref{tab:final_cnn_results_imagenet} show that VGG16 performed the best again while having a slightly higher accuracy value than the Xavier Glorot initialization strategy after 10 epochs. Inception V3 performed almost 30\% worse according to the final accuracy value compared to the Xavier Glorot initialization. Figure \ref{fig:inception_v3_ten_epochs_imagenet} shows that there is nearly no training progress involved during the 10 epochs and that the accuracy value is constant at around 63\% which makes it the worst performing model initialized with pre-trained ImageNet weights.
+
+\begin{table}[h!]
+\center
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss} & \textbf{Time (sec)}\\ \hline
+ Inception V3	& 0.6334  & 1.6597  & 0.6401	& 1.6433 &	2184.54\\ \hline
+ VGG16  		& 0.9745  	 	 & 0.0912      & 0.9611	  	  &	0.1730 	 & 2541.83\\ \hline     
+ ResNet50  	& 0.9134  	  	& 0.2991  	   & 0.9252	 	  &	0.3055	 &  3653.67\\ \hline
+\end{tabular}
+\caption{Final CNN results with Imagenet initialization}
+\label{tab:final_cnn_results_imagenet}
+\end{table}
+
+ResNet scored 4\% lower in terms of accuracy after 10 epochs when initialized with pre-trained ImageNet weights, but both VGG16 and ResNet showed a convergence towards a maximum in terms of accuracy depicted in figure \ref{fig:vgg16_ten_epochs_imagenet}  and \ref{fig:resnet50_ten_epochs_imagenet} respectively in contrast to Inception V3.
 
 \begin{figure}[h!]
 \centering
@@ -1036,36 +1076,51 @@ Test
 \end{figure}
 
 
+The experiments show that there is not initial boost in training accuracy when the CNN models are initialized with pre-trained ImageNet weights. This fact is more obviously shown in table \ref{tab:one_epoch_xavier_vs_imagenet} with the initial accuracy values after one epoch for both initialization strategies.
+
 
 \begin{table}[h!]
 \center
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
-\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss} & \textbf{Time (sec)}\\ \hline
- Inception V3	& 0.6334  & 1.6597  & 0.6401	& 1.6433 &	2184.54\\ \hline
- VGG16  		& 0.9745  	 	 & 0.0912      & 0.9611	  	  &	0.1730 	 & 2541.83\\ \hline     
- ResNet50  	& 0.9134  	  	& 0.2991  	   & 0.9252	 	  &	0.3055	 &  3653.67\\ \hline
+\textbf{Model} & \textbf{Xavier init acc} & \textbf{ImageNet init acc}\\ \hline
+ Inception V3	& 0.6539  & 0.6268\\ \hline
+ VGG16  		& 0.6519  	 	 &  0.6307	  	\\ \hline     
+ ResNet50  	& 0.6916  	  	 & 0.6389\\ \hline
 \end{tabular}
-\caption{Final CNN results with Imagenet initialization}
-\label{tab:final_cnn_results_imagenet}
+\caption{Accuracy comparison after one epoch with Xavier and ImageNet initialization}
+\label{tab:one_epoch_xavier_vs_imagenet}
 \end{table}
+
+
+The final accuracy values for both initialization strategies are shown in table \ref{tab:10_epochs_xavier_vs_imagenet}. Only VGG16 achieved a slightly higher accuracy value at the end while using the ImageNet initialization strategy while the other two models performed worse.
 
 \begin{table}[h!]
 \center
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
-\textbf{Model} & \textbf{Train Acc} & \textbf{Train Loss} & \textbf{Val Acc} & \textbf{Val Loss}\\ \hline
-Inception V3 & 0.6268  		 & 1.7132  	 & 0.6315	& 2.0153	\\ \hline
-VGG16  		& 0.6307  	 	 & 1.4430    & 0.6706	&	1.2011 \\ \hline
-ResNet50  	& 0.6389  	  	 & 1.4214  	 & 0.5931	&	5.1381\\ \hline
+\textbf{Model} & \textbf{Xavier init acc} & \textbf{ImageNet init acc}\\ \hline
+ Inception V3	& 0.9338  & 0.6334\\ \hline
+ VGG16  		& 0.9723  	 	 &  0.9745	  	\\ \hline     
+ ResNet50  	&  0.9548 	  	 & 0.9134 \\ \hline
 \end{tabular}
-\caption{CNN results after one epoch with Imagenet initialization}
-\label{tab:one_epoch_cnn_results_imagenet}
+\caption{Accuracy comparison after 10 epochs with Xavier and ImageNet initialization}
+\label{tab:10_epochs_xavier_vs_imagenet}
 \end{table}
+
+
+
+\newpage
+
 
 
 
 \section{Discussion}
+
+
+
+
+
 
 The lightweight CNN has a higher initial and final accuracy while having the lowest amounts of trainable parameters and only takes half the training time compared to the MNIST model.
 
