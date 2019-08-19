@@ -719,7 +719,7 @@ The "Lightweight CNN" has been burrowed from the Kaggle competition in order to 
 \end{enumerate}
 
 
-\subsubsection{CNN models}
+\subsubsection{CNN models} \label{cnn_models}
 
 The top layers of each CNN model have been removed in order to take other input tensors than the usual ones found in the ImageNet database which are \texttt{224x224} pixels to fit the log spectrogram dimensions. The here called "standard top layer configuration" has been stacked at the top of every CNN model in order to have a consistent configuration and to work with log spectrograms. The standard top layer configuration looks as follows:
 
@@ -1118,17 +1118,27 @@ The final accuracy values for both initialization strategies are shown in table 
 \section{Discussion}
 
 
+\begin{itemize}
+	\item Original learned domain of ImageNet inputs differs too much from the target domain of keyword spotting using log spectrograms
+	\item Batch Normalization normalizes input per mini-batch and helps speeding up the training process but also makes the initialization strategy less important \cite{ioffe2015batch}
+	\item The different CNN topologies indicate that pre-trained ImageNet weights are not a suitable initialization strategy when it comes to the presented task of keyword spotting
+	\item Adam as optimization strategy may be not the best fit based on it initialization bias correction terms \cite{kingma2014adam}. Stochastic gradient descent may be the better fit. Other optimization strategies are also worth investigating
+	\item 
+\end{itemize}
 
 
 
+The training accuracy did not start higher as expected but lower when using pre-trained ImageNet weights as the initialization strategy. The final training accuracy only improved slightly for one model, namely VGG16 while the other two models performed worse.\\
+The main problem here is probably the naive approach to make all layers of the CNN models trainable. By making all layers trainable the idea behind transfer learning is almost lost because the trained weights of the other domain are overwritten by the inputs of the new domain. The initialization of weights from another domain, namely ImageNet data than the target domain therefore probably leads to a weight distribution which is not ideal as an initialization approach and shifts too far from the distribution which needs to be learned.
+The fact that all layers of the pre-trained CNN models have been made trainable leads to a longer and more costly error-correction process inside the networks while trying to correct the already learned basic ImageNet features to fit the new domain of spectrograms. A better approach to test if pre-trained ImageNet weights are beneficial to the task of keyword spotting would probably be to recursively "freeze" the layers of the chosen model which makes them untrainble and check which is the optimal amount of frozen layers which leads to the highest accuracy. The main approach to transfer learning is to use a certain amount of frozen or fixed layers which learned the weight distribution of another domain and then stack another shallow model on top which uses the already learned features while fine-tuning the shallow model on top. The shallow model on top which is called "standard top layer configuration" in this project is explained in section \ref{cnn_models} but is probably superfluous in this setup because all layers of the tested models are trainable and therefore are able to learn the new target domain.
 
-The lightweight CNN has a higher initial and final accuracy while having the lowest amounts of trainable parameters and only takes half the training time compared to the MNIST model.
+
 
 
 
 \section{Conclusion}
 
-Unfortunately, the hypothesis that pre-trained ImageNet weights as an initialization strategy for the task of speech recognition would be beneficial could not be proven.
+The experiments have shown that using pre-trained ImageNet weights as an initialization strategy for CNNs in order to tackle the task of keyword spotting using spectrograms is not beneficial but rather harmful. Unfortunately, the hypothesis that pre-trained ImageNet weights as an initialization strategy for the task of speech recognition would be beneficial could not be proven.
 
 
 \section{Future Work} \label{future_work}
