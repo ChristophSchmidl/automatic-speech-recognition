@@ -1115,30 +1115,26 @@ The final accuracy values for both initialization strategies are shown in table 
 
 
 
-\section{Discussion}
+\section{Discussion} \label{discussion}
 
 
-\begin{itemize}
-	\item Original learned domain of ImageNet inputs differs too much from the target domain of keyword spotting using log spectrograms
-	\item Batch Normalization normalizes input per mini-batch and helps speeding up the training process but also makes the initialization strategy less important \cite{ioffe2015batch}
-	\item The different CNN topologies indicate that pre-trained ImageNet weights are not a suitable initialization strategy when it comes to the presented task of keyword spotting
-	\item Adam as optimization strategy may be not the best fit based on it initialization bias correction terms \cite{kingma2014adam}. Stochastic gradient descent may be the better fit. Other optimization strategies are also worth investigating
-	\item 
-\end{itemize}
 
 
 
 The training accuracy did not start higher as expected but lower when using pre-trained ImageNet weights as the initialization strategy. The final training accuracy only improved slightly for one model, namely VGG16 while the other two models performed worse.\\
-The main problem here is probably the naive approach to make all layers of the CNN models trainable. By making all layers trainable the idea behind transfer learning is almost lost because the trained weights of the other domain are overwritten by the inputs of the new domain. The initialization of weights from another domain, namely ImageNet data than the target domain therefore probably leads to a weight distribution which is not ideal as an initialization approach and shifts too far from the distribution which needs to be learned.
-The fact that all layers of the pre-trained CNN models have been made trainable leads to a longer and more costly error-correction process inside the networks while trying to correct the already learned basic ImageNet features to fit the new domain of spectrograms. A better approach to test if pre-trained ImageNet weights are beneficial to the task of keyword spotting would probably be to recursively "freeze" the layers of the chosen model which makes them untrainble and check which is the optimal amount of frozen layers which leads to the highest accuracy. The main approach to transfer learning is to use a certain amount of frozen or fixed layers which learned the weight distribution of another domain and then stack another shallow model on top which uses the already learned features while fine-tuning the shallow model on top. The shallow model on top which is called "standard top layer configuration" in this project is explained in section \ref{cnn_models} but is probably superfluous in this setup because all layers of the tested models are trainable and therefore are able to learn the new target domain.
-
+The main problem here is probably the naive approach to make all layers of the CNN models trainable. By making all layers trainable the idea behind transfer learning is almost lost because the trained weights of the other domain are overwritten by the inputs of the new domain. The initialization of weights from another domain than the target domain therefore probably leads to a weight distribution which is not ideal as an initialization approach and shifts too far from the distribution which needs to be learned.
+The fact that all layers of the pre-trained CNN models have been made trainable leads to a longer and more costly error-correction process inside the networks while trying to correct the already learned basic ImageNet features to fit the new domain of spectrograms. A better approach to test if pre-trained ImageNet weights are beneficial to the task of keyword spotting would probably be to recursively "freeze" the layers of the chosen model which makes them untrainble and check which is the optimal amount of frozen layers which leads to the highest accuracy. The main approach to transfer learning is to use a certain amount of frozen or fixed layers which learned the weight distribution of another domain and then stack another shallow model on top which uses the already learned features while fine-tuning the shallow model on top. The shallow model on top which is called "standard top layer configuration" in this project is explained in section \ref{cnn_models} but is probably superfluous in this setup because all layers of the tested models are trainable and therefore are able to learn the new target domain. Another explanation could be that the setup is right but the originally learned domain of ImageNet inputs differs too much from the target domain of keyword spotting using log spectrograms.\\
+The different CNN topologies indicate that pre-trained ImageNet weights are not a suitable initialization strategy when it comes to the presented task of keyword spotting but on the other hand all layers of all CNN models have been made trainable which might negates the statement that pre-trained ImageNet weights are not suitable for this case.\\
+Batch Normalization normalizes input per mini-batch and helps speeding up the training process but also makes the initialization strategy less important \cite{ioffe2015batch} which is a crucial point which has not been considered carefully enough before setting up the experiment. During the experiment a certain progress in convergence rate towards the accuracy maximum has been shown by using batch normalization but it might have been a better option to drop the batch normalization layers in favor of having clearer results about the initialization strategies.\\
+Adam as an optimization strategy may not be the best fit based on its initialization bias correction terms \cite{kingma2014adam}. Stochastic gradient descent may be the better fit because it has also been used in previos works in similar domains \cite{gouda2018speech} while other optimization strategies might also be worth investigating as long as they do not correct the initialization bias.
 
 
 
 
 \section{Conclusion}
 
-The experiments have shown that using pre-trained ImageNet weights as an initialization strategy for CNNs in order to tackle the task of keyword spotting using spectrograms is not beneficial but rather harmful. Unfortunately, the hypothesis that pre-trained ImageNet weights as an initialization strategy for the task of speech recognition would be beneficial could not be proven.
+The experiments have shown that the usage of pre-trained ImageNet weights as an initialization strategy for CNNs in order to tackle the task of keyword spotting using spectrograms is not beneficial but rather harmful. Unfortunately, the hypothesis that pre-trained ImageNet weights as an initialization strategy for the task of speech recognition would be beneficial could not be proven.\\
+On the other hand, there is still room for improvement in terms of setup variables to disprove this statement by adjusting the transfer learning strategy by freezing different amounts of layers, using a different optimization strategy or using another generalization technique than batch normalization which is not influencing the importance of the initialization strategy as discussed in section \ref{discussion}.
 
 
 \section{Future Work} \label{future_work}
@@ -1154,34 +1150,8 @@ The experiments have shown that using pre-trained ImageNet weights as an initial
 
 
 
-\section{References}
 
 
-
-
-\section{Appendix}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1\textwidth]{img/grading.png}
-    \caption{Weighted grading}
-    \label{fig:my_label}
-\end{figure}
-
-\begin{itemize}
-	\item the experiment(s) may be carried out in collaboration with others. In that case: specify in the “author’s statement” everybody’s contribution
-	\item the thesis itself is written individually and assessed individually
-	\item the ASR performance itself is not relevant for the assessment of the thesis
-	\item the RQ, the literature embedding of the RQ, the description of the method, the justification and set-up of the experiment are relevant for the assessment 
-	\item the general university guidelines apply (e.g., with respect to plagiarism)
-	\item there is no minimum number of pages for the thesis
-\end{itemize}
-
-
-
-
-
-\newpage
 
 % You can choose a citation style, 'plain' is the default
 % See:
