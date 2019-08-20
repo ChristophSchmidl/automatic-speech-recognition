@@ -152,6 +152,49 @@
 
 \section{Introduction}
 
+Virtual voice assistants like Amazon Alexa or Google Echo are becoming parts of our everyday lifes more and more. In order to communicate with these assistants and giving the same experience to every user, the speech recognition system inside these assistants has to be robust towards differing dialects and interfering background noises. One subset of speech recognition is the so called "keyword spotting" (KWS) task which is responsible for identifying special keywords inside a longer utterance. Keyword spotting not only is implemented inside virtual voice assistants with a special, isolated embodyment like Alexa or Echo, but also part of mobile phones which are operating on Google's Android or Apple's iOS operating systems. Google offers the possibility on Android devices to search by voice by beginning the utterance with "OK, Google" \cite{schalkwyk2010your} which is a prime example of keyword spotting. These KWS systems for mobile phones are mostly implemented in such a way that they are constantly listening to their environment and a so called "voice activity detection" (VAD) system with lower power consumption is preceding the actual keyword spotting system in order to spare the battery and only use the KWS system when a human voice signal is actually present. One could think that these KWS systems are operating on raw audio inputs but many of them are actually using a different representation like mel frequency cepstral coefficients (MFCC) which is a representation of the short-term power spectrum of a sound or visual representations of different features like spectrograms. Spectrograms are visual representations of the spectrum of frequencies of a (audio) signal as it varies through time as shown in figure \ref{fig:spectrogram_vs_time_plot}. Spectrograms offer the unique possibility to approach a KWS task by utilizing well performing methods out of the image classification domain.
+
+
+Given the progress in the field of image classification using Convolutional Neural Networks (CNNs) \cite{krizhevsky2012imagenet} which produces impressing results, it is a tempting idea to transform the domain of audio data into the domain of image data to utilize all available image classification approaches. 
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{img/papers/image_recognition/spectrogram.png}
+  \caption{}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{img/papers/image_recognition/amplitude_vs_time.png}
+  \caption{}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{A comparison of the spectrogram (a) and the
+amplitude-vs.-time plot (b) for the same audio recording of
+a person saying the word “bed”.}
+\label{fig:spectrogram_vs_time_plot}
+\end{figure}
+
+
+
+
+
+\begin{itemize}
+	\item Explain the domain of keyword spotting based on audio
+	\item Explain the domain of image classification and already established models
+	\item Explain the connection between both by introducing spectrograms and use the picture between spectrogram and wave representation
+	\item Show the advantage of CNNs in the domain of image classification
+	\item Use the introduction of image classification, CNNs, ImageNet and go over to the idea of transfer learning
+\end{itemize}
+
+
+
+
+
+
+
 The task of keyword spotting (KWS) is interesting to different domains where a hands-free interaction experience is required or desired like Google's feature of interacting with mobile devices (include "OK Google" reference). \\
 
 Different approaches to keyword spotting like:
@@ -170,7 +213,7 @@ Different approaches to keyword spotting like:
 	\item Research Question, Hypotheses, intro to experiment
 \end{enumerate}
 
-\subsection{Literature review}
+\subsection{Previous work}
 
 This section contains the most prominent approaches to the KWS task which have been successfully applied in the past and serve as baseline models or inspirations for the proposed model in this thesis. 
 
@@ -246,25 +289,7 @@ We also saw, particularly in the case of the low-latency convolution model, how 
 
 
 
-\begin{figure}
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{img/papers/image_recognition/spectrogram.png}
-  \caption{}
-  \label{fig:sub1}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\linewidth]{img/papers/image_recognition/amplitude_vs_time.png}
-  \caption{}
-  \label{fig:sub2}
-\end{subfigure}
-\caption{A comparison of the spectrogram (a) and the
-amplitude-vs.-time plot (b) for the same audio recording of
-a person saying the word “bed”.}
-\label{fig:spectrogram_vs_time_plot}
-\end{figure}
+
 
 
 
@@ -359,6 +384,9 @@ V2 Test & 82.7\% & 88.2\% \\ \hline
 	\item Learning and transferring mid-level image representations using convolutional neural networks \cite{oquab2014learning}
 	\item Deep residual learning for small-footprint keyword spotting \cite{tang2018deep}
 \end{itemize}
+
+
+\subsection{Research Question}
 
 
 
@@ -654,6 +682,7 @@ Adam \cite{kingma2014adam} has been used as the main optimization technique for 
 \textbf{Parameter} & \textbf{Value}  \\ \hline
 Dropout & 0.2 \\ \hline
 Optimization & Adam\\ \hline
+Loss & Categorical Crossentropy \\ \hline
 Training/validation ratio & 80:20\\ \hline
 Epochs & 10 \\ \hline
 Batch size & 32 \\ \hline
@@ -1166,7 +1195,8 @@ On the other hand, there is still room for improvement in terms of setup variabl
 
 Future work could concentrate on the effect of batch normalization with regards to transfer learning and in how far it influences the importance of the right initialization strategy.\\ 
 Another point which is worth investigating is the right amount of fixed or frozen layers while applying transfer learning between domains which do not directly relate to each other like speech recognition and image classification as presented in this project. The right amount of fixed layers and how far fine-tuning has to be applied in order to make use of already learned features from another domain seems to be of great importance. The idea of recursive feature elimination as used in text analysis to determine the most contributing features could also be applied to the right amount of fixed or frozen layers.\\
-Additional preprocessing and feature engineering steps also seem interesting to investigate when transfer learning is applied, e.g., the correlation between accuracy and the dimensions of spectrograms while using already learned features from another domain. The detection of outliers and removing bad audio samples could also be beneficial in order to boost the overall accuracy.
+Additional preprocessing and feature engineering steps also seem interesting to investigate when transfer learning is applied, e.g., the correlation between accuracy and the dimensions of spectrograms while using already learned features from another domain. The detection of outliers and removing bad audio samples could also be beneficial in order to boost the overall accuracy.\\
+Using spectrograms based on other features like mel frequency cepstral coefficients (MFCC) and see if transfer learning is beneficial could also be an interesting area to investigate in the future.
 
 
 
