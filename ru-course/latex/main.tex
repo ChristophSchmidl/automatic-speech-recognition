@@ -156,9 +156,6 @@ Virtual voice assistants like Amazon Alexa or Google Echo are becoming parts of 
 Given the fast progress in the field of image classification and the spectrogram representation, it is a tempting idea to transform the domain of audio data into the domain of image data to utilize all available image classification approaches. One prominent approach in the domain of image classification are Convolutional Neural Networks (CNNs) which produced state-of-the-art results in the past ImageNet competitions \cite{deng2009imagenet} \cite{krizhevsky2012imagenet}. ImageNet is a large database designed for the use in visual object recognition software research and contains more than 14 milltion images. All images have been manually annotated with corresponding labels.\\
 The vast majority of different CNN architectures in a combination with the ImageNet dataset resulted in the idea that mid-level image representations could be transferred from the domain of ImageNet data to another, similar domain which is not including ImageNet data but still images. This idea is known as transfer learning and has been successfully used in the past between different domains which incorporate image data \cite{oquab2014learning}. To the best of my knowledge, not much research has been done on transfer learning where the origin domain and target domain differ so heavily such as image data and audio data.\\
 
-Therefore, this project focuses on the idea if already learned features from the image domain, e.g., ImageNet dataset could be used as an initilization strategy to boost the performance of CNN classifiers which operate on audio data which has been transformed to spectrograms. The problem is narrowed by concentrating on the KWS task and the usage of pre-trained CNN models which have been trained on ImageNet data. The TensorFlow Speech Recognition Challange \cite{kaggle_challenge} is kindly providing the audio dataset, namely the Speech commands dataset \cite{scd_v1}.\\
-
-The main research question is therefore if pre-trained ImageNet weights are boosting the initial accuracy of CNN models by serving as an initialization strategy for the task of speech recognition on log spectrograms.\\
 
 
 \begin{figure}
@@ -182,7 +179,7 @@ a person saying the word “bed”.}
 \end{figure}
 
 
-
+\newpage
 
 
 
@@ -190,107 +187,13 @@ a person saying the word “bed”.}
 
 \subsection{Previous work}
 
-This section contains the most prominent approaches to the KWS task which have been successfully applied in the past and serve as baseline models or inspirations for the proposed model in this thesis. 
-
-
-
-
-Different approaches to keyword spotting like:
-
-\begin{itemize}
-	\item Deep Neural Networks (DNNs)
-	\item Convolutional Neural Networks (CNNs)
-	\item (Keyword/Filler) Hiddem Markov Models (HMMs)
-\end{itemize}
-
-
+The task of key word spotting (KWS) has been approached differently in the past. A common technique is a Keyword/Filler Hidden Markov Model (HMM) which was later superseded by Deep Neural Networks \cite{chen2014small}. The deep KWS system proposed in \cite{chen2014small} consists of three components as shown in figure \ref{fig:deep_kws_system_frameworkl}, namely
 
 \begin{enumerate}
-	\item Problem
-	\item Background (literature overview)
-	\item Research Question, Hypotheses, intro to experiment
+	\item[i] A feature extraction module
+	\item[ii] A deep neural network
+	\item[iii] A posterior handling module
 \end{enumerate}
-
-
-\subsubsection{Raw waveform-based audio classification using sample-level CNN architectures}
-
-\begin{itemize}
-	\item Raw waveform-based audio classification using sample-level CNN architectures \cite{lee2017raw}
-\end{itemize}
-
-
-\subsubsection{Transferable deep features for keyword spotting}
-
-
-\begin{itemize}
-	\item Transferable deep features for keyword spotting \cite{retsinas2018transferable}
-\end{itemize}
-
-\subsubsection{Imagenet: A large-scale hierarchical image database}
-
-\begin{itemize}
-	\item Imagenet: A large-scale hierarchical image database \cite{deng2009imagenet}
-\end{itemize}
-
-
-\subsubsection{Imagenet classification with deep convolutional neural networks}
-
-\begin{itemize}
-	\item Imagenet classification with deep convolutional neural networks \cite{krizhevsky2012imagenet}
-\end{itemize}
-
-\subsubsection{Speech Recognition: Keyword Spotting Through Image Recognition.}
-
-The authors of the paper "Speech Recognition: Keyword Spotting Through Image Recognition" \cite{gouda2018speech} transformed the KWS task which incoporates audio data into the domain of image classification. They used the Speech Commands Dataset \cite{warden2018speech} which contains spoken words of the length of one second in order to train and evalutate their model. According to \cite{warden2018speech}, the Speech Commands Dataset V2 \cite{scd_v2} comprises one-second audio clips which were sampled at 16KHz and containing ten words, namely "Yes", "No", "Up", "Down", "Left", "Right", "On", "Off", "Stop", and "Go", and have one additional special label for "Unknown Word", and another for "Silence" (no speech detected). A vector representation of these one-second audio clips would therefore be of the form  $\mathbb{R}^{16000}$.\\
-
-The authors used three different models, namely:
-
-\begin{itemize}
-	\item A Low Latency Convolutional Neural Network which is designed to reduce its memory footprint by limiting the number of model parameters. This model is similar to the model called "cnn-one-fstride4" which is used in \cite{sainath2015convolutional} but differs in terms of filter size, stride, channels, dense and params. The model has been trained using Stochastic Gradient Descent and Xavier Initialization has been used in order to initialize the model weights.
-	\item The MNIST TensorFlow CNN / Basic CNN where some tweaks have been performed to the first layer in order to fix dimension mismatches. A baseline architecture is described in \cite{sainath2015convolutional} (3 module setup?).
-	
-		\begin{itemize}
-			\item \url{https://github.com/tensorflow/docs/blob/master/site/en/tutorials/estimators/cnn.ipynb}
-			\item \url{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/tutorials/mnist}
-		\end{itemize}
-		
-		\item Adversarially trained CNN which is inspired by MCDNN \cite{cirecsan2012multi} and AlexNet \cite{krizhevsky2012imagenet}. One shallow CNN which has been used for prototyping and hyperparameter tuning. Dropout was counter-productive and therefore Virtual Adversarial Training was used, inspired by \cite{goodfellow2016deep}.
-		
-\end{itemize}
-
-Evaluated parameters in this paper:
-
-\begin{itemize}
-	\item Adversarial Training Results and Comparison with
-Vanilla CNN
-	\item increase in training and validation accuracy over the first ten epochs for the low-latency convolution and VAT models: a zoomed-in version of Figure 12
-	\item decrease of costs over 500 epochs for the lowlatency convolution and VAT models: a zoomed-out version of Figure 13
-	\item  increase of training and validation accuracy over 500 epochs for the low-latency convolution and VAT models: a zoomed-out version of Figure 10
-	\item  reduction of cost over the first ten epochs for the low-latency convolution and VAT models: a zoomed-in version of Figure 11
-	\item the evolution of training cross-entropy loss (blue and green) and validation accuracy (red and orange) compared between Xavier and truncated normal initialization; Xavier converges much faster and may attain better results
-	\item the evolution of training cross-entropy loss (blue and green) and validation accuracy (red and orange) compared between Adam and SGD optimization; Adam converges faster than SGD but reaches the same results
-	\item  effect of the number of frequency-counting buckets on the accuracy of the low-latency convolution model. The model did not benefit from the increase in available data caused by increasing the number of buckets.
-	\item effect of the spectrogram window size on the accuracy of the low-latency convolution model. There is a local optimum, as there was for stride in Figure 18.
-	\item effect of added background noise on the final accuracy of the low-latency convolution model. The horizontal axis is signal-noise ratio in linear units.
-	\item effect of the spectrogram window stride on the accuracy of the low-latency convolution model. For low values of stride, there is too much redundancy, while larger values result in lost information.
-\end{itemize}
-
-\textbf{Conlusion}
-
-In this project we tackled the speech recognition problem by applying different CNN models on image data formed using log spectrograms of the audio clips. We also successfully implemented a regularization method "Virtual Adversarial Training" that achieved a maximum of 92\% validation accuracy on 20\% random sample of
-the input data.\\
-The significant work done in this project was the demonstration of how to convert a problem in audio recognition into the better-studied domain of image classification, where the powerful techniques of convolutional neural networks are fully developed.
-We also saw, particularly in the case of the low-latency convolution model, how crucial good hyperparameter tuning is to the accuracy of the model. A great number of hyperparameters must be tuned, including the many choices that go into network architecture, and any of the hyperparameters, poorly chosen, can make or break the overall performance of the model. Another contribution was the use of adversarial training to provide a regularization effect in audio recognition; this technique improved results relative even to well-established techniques such as dropout, and therefore has promising applications in the future.
-
-
-
-
-
-
-
-\textcolor{red}{Include summary about the approach of converting the long, one dimensional vector of audio data into a spectrograms and therefore making it a image classification problem.}
-
-\subsubsection{Convolutional neural networks for small-footprint keyword spotting}
 
 \begin{figure}[h]
     \centering
@@ -301,110 +204,38 @@ left to right: (i) Feature Extraction (ii) Deep Neural Network
     \label{fig:deep_kws_system_frameworkl}
 \end{figure}
 
-This framework originally comes from \cite{chen2014small}. The only difference is the exchange of the DNN for a CNN.
+The feature extraction module produces 40-dimensional log-filterbank energies which are computed very 10 ms over a windows of 25 ms. The deep neural network is a standard feed-forward fully connected neural network. The last layer uses a Softmax activation function while hidden layers are using the rectified linear unit (ReLU) activation function. The training is done using cross-entropy as loss function and asynchronous stochastic gradient descent as the optimization strategy. The posterior handling method is applying posterior smoothing and a confidence score which serves as a final decision method. The results show that this framework outperforms the HMM system on both clean and noisy data. The authors state that transfer learning is used in order to initialize the hidden layers of the network and that all layers are updated in training. This results in more robust feature representations and avoids bad local optima. Unforunately, the authors do not state which dataset is used for transfer learning.\\
+
+Later work picks up the three module framework shown in figure \ref{fig:deep_kws_system_frameworkl} and replaces the deep neural network (DNN) with a CNN \cite{sainath2015convolutional}. The CNN architecture is evaluated by limiting the amount of multiplies and parameters in order to fit it to the constraints of small-footprint key word spotting tasks. The authors state that CNNs are a better fit to the task of key word spotting because they capture translational invariance due to different speaking styles with less parameters than DNNs. The CNN outperforms the DNN and offers a 27-44\% relative improvement in false reject rates. The proposed pooling in time strategy also produces a 41\% relative improvement over a DNN architecture for clean and noisy data. The feature extraction step remains the same as in \cite{chen2014small}. Other architectures which are inspired by CNNs like Convolutional Recurrent Neural Networks (CRNNs) also showed promising results in the area of key word spotting \cite{arik2017convolutional}.\\
+
+The success of CNNs in the domain of speech recognition on log-mel filterbank features inspired others to transform audio data to image representations where CNN architectures are known to perform well. So the KWS task which incoporates audio data was transformed to the domain of image classification \cite{gouda2018speech}. The authors use the Speech Commands Dataset \cite{warden2018speech} which contains spoken words of the length of one second in order to train and evalutate their model. According to \cite{warden2018speech}, the Speech Commands Dataset V1 \cite{scd_v1} comprises one-second audio clips which were sampled at 16KHz. A vector representation of these one-second audio clips would therefore be of the form  $\mathbb{R}^{16000}$. The authors evaluated three different models, namely a low latency CNN, a CNN inspired by TensorFlow's MNIST tutorial and a custom adversarially trained CNN which is inspired by MCDNN \cite{cirecsan2012multi} and AlexNet \cite{krizhevsky2012imagenet}. The adversarial approach is used because Dropout was counter-productive \cite{goodfellow2016deep}. In contrast to \cite{chen2014small} and \cite{sainath2015convolutional}, the authors do not use log-mel filterbank features as inputs to their models but spectrograms of size 28x28 in grayscale. Based on the fact that the authors use stochastic gradient descent at the optimization strategy, the parameter initialization is important and Xavier initialization is used \cite{glorot2010understanding}. The authors show that their regularization method of "Virtual Adversarial Training" achieved a maximum of 92\% validation accuracy and that it is possible to achieve good results by converting an audio recognition problem into the better studied domain of image classification.\\
+
+Previous work also shows that it is possible to transfer the hidden layer activations for extracting deep features and applying them to the task of key word spotting \cite{retsinas2018transferable}. This results into more robust feature learning but is only used for domains which are still related to speech. The task of transferring learned features from one related domain to the other is also shown when it comes to visual recognition tasks \cite{oquab2014learning}. The authors show that transferred features lead to significantly improved results for object detection when using the ImageNet data to compute mid-level image representations.\\
+
+Nevertheless, not much research has been done on transfer learning when it comes to transferring learned mid-level representations in the image domain to the audio domain.\\
 
 
-
-\begin{itemize}
-	\item Convolutional neural networks for small-footprint keyword spotting \cite{sainath2015convolutional}
-\end{itemize}	
-
-\textcolor{red}{Include summary about the different CNNs approaches which have been put into the 3 module framework of the below framework where the DNN has been exchanged for a CNN. How do the authors handle the long, one dimensional vector?}
-
-\subsubsection{Small-footprint keyword spotting using deep neural networks}
-
-\begin{itemize}
-	\item Small-footprint keyword spotting using deep neural networks \cite{chen2014small}
-\end{itemize}	
-
-\textcolor{red}{Include summary about the comparison between DNNs and HMMs and the general 3 module approach here: 1. Feature extraction. 2. Deep Neural Network 3. Posterior Handling. DNNs do not need a decoding algorithm like HMMs with Viterbi which makes it low latency.}
-
-\subsubsection{Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition}
-
-
-\begin{itemize}
-	\item Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition \cite{warden2018speech}
-\end{itemize}	
-
-\textcolor{red}{Include summary and say why the Speech Commands Dataset is a good fit for this thesis. You probably do not need a Voice-activity detection (VAD) system here.}
-
-
-
-
-\textbf{Top-One Error}
-
-\begin{quote}
-The standard chosen for the TensorFlow speech commands example code is to look for the ten words "Yes", "No", "Up", "Down", "Left", "Right", "On", "Off", "Stop", and "Go", and have one additional special label for "Unknown Word", and another for "Silence" (no speech detected). The testing is then done by providing equal numbers of examples for each of the twelve categories, which means each class accounts for approximately 8.3\% of the total. The "Unknown Word" category contains words randomly samples from classes that are part of the target set. The "Silence" category has one-second clips extracted randomly from the background noise audio files.
-\end{quote}
-
-\textbf{Applications}
-
-\begin{quote}
-The TensorFlow tutorial gives a variety of baseline models, but one of the goals of the dataset is to enable the creation and comparison of a wide range of models on a lot of different platforms, and version one of has enabled some interesting applications. CMSISNN [21] covers a new optimized implementation of neural network operations for ARM microcontrollers, and uses Soeech Commands to train and evaluate the results. Listening to the World [22] demonstrates how combining the dataset and UrbanSounds [23] can improve the noise tolerance of recognition models. Did you Hear That [24] uses the dataset to test adversarial attacks on voice interfaces. Deep Residual Learning for Small Footprint Keyword Spotting \cite{tang2018deep} shows how approaches learned from ResNet can produce more efficient and accurate models. Raw Waveformbased Audio Classification \cite{lee2017raw} investigates alternatives to traditional feature extraction for speech and music models. Keyword Spotting through Image Recognition \cite{gouda2018speech} looks at the effect of virtual adversarial training on the keyword task.
-\end{quote}
-
-\textbf{Evaluation}
-
-\begin{quote}
-One of this dataset's primary goals is to enable meaningful comparisons between different models' results, so it's important to suggest some precise testing protocols. As a starting point, it's useful to specify exactly which utterances can be used for training, and which must be reserved for testing, to avoid overfitting. The dataset download includes a text file called \texttt{validation\_list.txt}, which contains a list of files that are expected to be used for validating results during training, and so can be used frequently to help adjust hyperparameters and make other model changes. The \texttt{testing\_list.txt} file contains the names of audio clips that should only be used for measuring the results of trained models, not for training or validation. The set that a file belongs to is chosen using a hash function on its name. This is to ensure that files remain in the same set across releases, even as the total number in the same set across releases, even as the total number changes, so avoid set corss-contaimination when trying old models on the more recent test data. The Python implementation of the set assignment algorithm is given in the TensorFlow tutorial code [12] that is a companion to the dataset.
-\end{quote}
-
-\textbf{Historical Evaluations}
-
-\begin{quote}
-Version 1 of the dataset \cite{scd_v1} was released August 3rd 2017, and contained 64,727 utterances from 1,881 speakers. Training the default convolution model from the TensorFlow tutorial (based on Convolutional Neural Networks for Small-footprint Keyword Spotting \cite{sainath2015convolutional}) using the V1 training data gave a Top-One score of 85.4\%, when evaluated against the test set from V1. Training the same model against version 2 of the data set \cite{scd_v2}, documented in this paper, produces a model that scores 88.2\% Top-One on the training set extracted from the V2 data. A model trained on V2 data, but evaluated against the V1 test set gives 89.7\% Top-One, which indicates that the V2 training data is responsible for a substantial improvement in accuracy over V1. The full set of results are shown in Table \ref{tab:v1_v2_results}
-\end{quote}
-
-
-\begin{table}[]
-\center
-\begin{tabular}{|c|c|c|}
-\hline
-Data & V1 Training & V2 Training \\ \hline
-V1 Test & 85.4\% & 89.7\% \\ \hline
-V2 Test & 82.7\% & 88.2\% \\ \hline
-\end{tabular}
-\caption{Top-One accuracy evaluations using different training data}
-\label{tab:top_one_accuracy}
-\end{table}
-
-
-
-
-\begin{itemize}
-	\item Convolutional recurrent neural networks for small-footprint keyword spotting \cite{arik2017convolutional}
-	\item Honk: A PyTorch reimplementation of convolutional neural networks for keyword spotting \cite{tang2017honk}
-	\item An experimental analysis of the power consumption of convolutional neural networks for keyword spotting \cite{tang2018experimental}
-	\item Transfer learning for speech recognition on a budget \cite{kunze2017transfer}
-	\item Learning and transferring mid-level image representations using convolutional neural networks \cite{oquab2014learning}
-	\item Deep residual learning for small-footprint keyword spotting \cite{tang2018deep}
-\end{itemize}
 
 
 \subsection{Research Question}
 
 
+Therefore, this project focuses on the idea if already learned features from the image domain, e.g., ImageNet dataset could be used as an initilization strategy to boost the performance of CNN classifiers which operate on audio data which has been transformed to spectrograms. The problem is narrowed by concentrating on the KWS task and the usage of pre-trained CNN models which have been trained on ImageNet data. The TensorFlow Speech Recognition Challange \cite{kaggle_challenge} is kindly providing the audio dataset, namely the Speech commands dataset \cite{scd_v1}.\\
+
+The main research question is therefore if pre-trained ImageNet weights are boosting the initial accuracy of CNN models by serving as an initialization strategy for the task of speech recognition on log spectrograms in contrast to common initialization strategies like Xavier initialization proposed in \cite{gouda2018speech}. The hypothesis is therefore that the pre-trained ImageNet weights should improve the initial accuracy of the CNN models.\\
 
 
 \section{Method}
 
-The method is inspired by \cite{gouda2018speech} where three different models have been evaluated on their capability to handle audio data transformed to images. One of the baseline models is the MNIST model which is also used in the Tensorflow Speech Recognition tutorial \cite{tutorial}
+The method is inspired by \cite{gouda2018speech} where three different models have been evaluated on their capability to handle audio data transformed to images. One of the baseline models is the MNIST model which is also used in the Tensorflow Speech Recognition tutorial \cite{tutorial}. This model together with another one ("Lightweight CNN") taken from the Kaggle forum and explained later on is used as the initial baseline when it comes to accuracy. These two models solely use Xavier initialization as used in \cite{gouda2018speech} and introduced in \cite{glorot2010understanding}. This initialization strategy is explained as follows:\\
 
 
-\begin{enumerate}
-	\item methodology, types of analyses, selection of the method
-\end{enumerate}
-
-
-Xavier Glorot initialization \cite{glorot2010understanding}
-
-Taken from \cite{gouda2018speech}: For an $m \times x$ dimensional matrix $M, M_{i,j}$ is assigned values selected uniformly from the distribution $[-\epsilon, \epsilon]$, where
+For an $m \times x$ dimensional matrix $M, M_{i,j}$ is assigned values selected uniformly from the distribution $[-\epsilon, \epsilon]$, where
 \begin{equation} \label{eq:xavier}
 \epsilon = \frac{\sqrt{6}}{\sqrt{m + n}}
 \end{equation}
 
-
-Xavier initialization is shown in equation \ref{eq:xavier}
+The main part of the project is evaluating the performance of three different CNN architectures, namely VGG16, ResNet50 and Inception V3 with regards to their initial accuracy values when they are initialized with the Xavier strategy and then with pre-trained ImageNet model weights. These models are used because they each have unique topologies and won the ImageNet challange in their respective years. The different topologies should therefore guarantee that an improvement in initial accuracy values is actually due to the initialization strategy and not the topology itself.
 
 
 
@@ -1174,10 +1005,9 @@ The main problem here is probably the naive approach to make all layers of the C
 The fact that all layers of the pre-trained CNN models have been made trainable leads to a longer and more costly error-correction process inside the networks while trying to correct the already learned basic ImageNet features to fit the new domain of spectrograms. This is probably the reason why the ImageNet initialization strategy leads to lower starting accuracies. A better approach to test if pre-trained ImageNet weights are beneficial to the task of keyword spotting would probably be to recursively "freeze" the layers of the chosen model which makes them untrainble and check which is the optimal amount of frozen layers which leads to the highest accuracy. The main approach to transfer learning is to use a certain amount of frozen or fixed layers which learned the weight distribution of another domain and then stack another shallow model on top which uses the already learned features while fine-tuning this top model. The shallow model on top which is called "standard top layer configuration" in this project is explained in section \ref{cnn_models} but is probably superfluous in this setup because all layers of the tested models are trainable and are therefore able to learn the new target domain based on their complexity. Another explanation could be that the setup is right but the originally learned domain of ImageNet inputs differs too much from the target domain of keyword spotting using log spectrograms.\\
 The different CNN topologies indicate that pre-trained ImageNet weights are not a suitable initialization strategy when it comes to the presented task of keyword spotting because they all experienced the same effect of lower starting accuracies but on the other hand all layers of all CNN models have been made trainable which might negates the statement that pre-trained ImageNet weights are not suitable for this case.\\
 Batch Normalization normalizes input per mini-batch and helps speeding up the training process but also makes the initialization strategy less important \cite{ioffe2015batch} which is a crucial point which has not been considered carefully enough before setting up the experiment. During the experiment a certain progress in convergence rate towards the accuracy maximum has been shown by using batch normalization but it might have been a better option to drop the batch normalization layers in favor of having clearer results about the initialization strategies and only use dropout as a regularization technique.\\
-Adam as an optimization strategy may not be the best fit based on its initialization bias correction terms \cite{kingma2014adam}. Stochastic gradient descent may be the better fit because it has also been used in previos works in similar domains \cite{gouda2018speech} while other optimization strategies might also be worth investigating as long as they do not correct the initialization bias.\\
-
-RGB data vs grayscale problem??????
-
+Adam as an optimization strategy may not be the best fit based on its initialization bias correction terms \cite{kingma2014adam}. Stochastic gradient descent may be the better fit because it has also been used in previos works in similar domains \cite{gouda2018speech} while other optimization strategies might also be worth investigating as long as they do not correct the initialization bias.
+Given that the ImageNet dataset is including images based on 3-channels, namely RGB and the produced spectrograms are only based on grayscale and therefore 1-channel, the pre-trained weights could have been of more use if the original ImageNet dataset would have been converted to grayscale before transferring them to fit the target domain.
+\\
 
 
 \section{Conclusion}
